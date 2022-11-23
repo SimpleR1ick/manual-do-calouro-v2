@@ -1,0 +1,103 @@
+{
+    "invalid_acess": {
+        "type": "danger",
+        "text": "Acesso negado!"
+    },
+    
+    "invalid_chars": {
+        "type": "danger",
+        "text": "Dados invalidos!"
+    },
+    "invalid_name": {
+        "type": "danger",
+        "text": "Nome inválido!"
+    },
+    "invalid_email": {
+        "type": "danger",
+        "text": "E-mail inválido!"
+    },
+    "invalid_pass": {
+        "type": "danger",
+        "text": "Senha inválida!"
+    },
+    "invalid_data": {
+        "type": "danger",
+        "text": "E-mail e/ou senha inválidos!"
+    },
+    "invalid_hash": {
+        "type": "danger",
+        "text": "Chave de recuperação inválida!"
+    },
+    "duplicated_email": {
+        "type": "danger",
+        "text": "E-mail já cadastrado!"
+    },
+    "user_registered": {
+        "type": "success",
+        "text": "Cadastrado com sucesso!"
+    },
+    "user_updated": {
+        "type": "success",
+        "text": "Atualizado com sucesso!"
+    },
+    "user_deleted": {
+        "type": "success",
+        "text": "Excluído com sucesso!"
+    },
+    "require_login": {
+        "type": "danger",
+        "text": "Login necessário!"
+    },
+    "exceeded_size": {
+        "type": "danger",
+        "text": "Tamanho limite do arquivo execedido."
+    },
+    "inactive_user": {
+        "type": "danger",
+        "text": "Usuário invativo!"
+    },
+    "profile_updated": {
+        "type": "success",
+        "text": "Perfil atualizado com sucesso!"
+    },
+    "email_sent": {
+        "type": "info",
+        "text": "E-mail enviado com sucesso!"
+    },
+    "email_erro": {
+        "type": "danger",
+        "text": "Erro! E-mail não enviado!"
+    },
+    "recovery_send": {
+        "type": "success",
+        "text": "Solicitação enviada, confira seu e-mail."
+    },
+    "recovery_erro": {
+        "type": "danger",
+        "text": "Solicitação cancelada, erro ao enviar e-mail."
+    },
+    "pass_updated": {
+        "type": "success",
+        "text": "Senha atualizada!"
+    },
+    "enrollment_duplicated": {
+        "type": "danger",
+        "text": "Matrícula já registrada!"
+    },
+    "upload_error": {
+        "type": "danger",
+        "text": "Erro no upload da foto!"
+    },
+    "contact_registered": {
+        "type": "success",
+        "text": "Contato cadastrado com sucesso"
+    },
+    "contact_updated": {
+        "type": "success",
+        "text": "Contato atualizado com sucesso"
+    },
+    "contact_deleted": {
+        "type": "success",
+        "text": "Contato excluido com sucesso!"
+    }
+}
