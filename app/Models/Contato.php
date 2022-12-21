@@ -31,7 +31,7 @@ class Contato {
     private $dsc_contato;
 
     /**
-     * Método responsavel por inserir o contato no banco de dados
+     * Método responsável por inserir o contato no banco de dados
      * @return boolean
      */
     public function insertContact(): bool {
@@ -46,7 +46,7 @@ class Contato {
     }
 
     /**
-     * Método responsavel por atualizar o contato no banco de dados
+     * Método responsável por atualizar o contato no banco de dados
      * @return boolean
      */
     public function updateContact(): bool {
@@ -59,7 +59,7 @@ class Contato {
     }
 
     /**
-     * Metodo responsavel por excluir um contato do banco de dados
+     * Método responsável por excluir um contato do banco de dados
      * @return boolean
      */
     public function deleteContact(): bool {
@@ -125,7 +125,7 @@ class Contato {
     }
 
     /**
-     * Méthodo responsavel por retornar usuario
+     * Método responsável por retornar os contatos
      * @param  string $where
      * @param  string $order
      * @param  string $limit
@@ -137,7 +137,13 @@ class Contato {
         return (new Database('contato'))->select($where, $order, $limit, $fields);
     }
 
-    public static function getContactsInfo($id) {
+    /**
+     * Método responsável por consultar as informações de um contato, pelo ID do usuário
+     * @param integer $id
+     * 
+     * @return \PDOStatement|bool
+     */
+    public static function getContactsInfo(int $id): mixed {
         $sql = "SELECT c.id_contato,
                     tc.dsc_tipo,
                     c.dsc_contato
@@ -149,7 +155,28 @@ class Contato {
     }
 
     /**
-     * Método responsavel por retornar os contatos de um usuario
+     * Método responsável por retornar todos os contatos com seus campos de descrição
+     * @param string $order
+     * @param string $limit
+     * 
+     * @return \PDOStatement|bool
+     */
+    public static function getDscContacts(string $order, string $limit) {
+        $sql = "SELECT c.id_contato,
+                    u.nom_usuario,
+                    tc.dsc_tipo,
+                    c.dsc_contato
+                FROM contato c
+                    JOIN tipo_contato tc ON (c.fk_tipo_contato_id_tipo = tc.id_tipo)
+                    JOIN servidor s ON (c.fk_servidor_fk_usuario_id_usuario = s.fk_usuario_id_usuario)
+                    JOIN usuario u ON (s.fk_usuario_id_usuario = u.id_usuario)
+                ORDER BY $order LIMIT $limit";
+
+        return (new Database)->execute($sql);
+    }
+
+    /**
+     * Método responsável por retornar os contatos de um usuário
      * @param integer $id
      * 
      * @return self|bool
@@ -159,7 +186,7 @@ class Contato {
     }
 
     /**
-     * Método responsavel por retornar os contatos de um usuario
+     * Método responsável por retornar os contatos de um usuário
      * @param integer $fk
      * 
      * @return array|bool
@@ -169,7 +196,7 @@ class Contato {
     }
 
     /*
-     * Metodos GETTERS E SETTERS
+     * Métodos GETTERS E SETTERS
      */
 
     /**

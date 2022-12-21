@@ -7,7 +7,7 @@ use App\Controller\Api;
 $obRouter->get('/api/v1/users', [
     'middlewares' => [
         'api',
-        'cache'
+        'user-basic-auth'
     ],
     function($request) {
         return new Response(200, Api\User::getUsers($request), 'application/json');
@@ -18,7 +18,7 @@ $obRouter->get('/api/v1/users', [
 $obRouter->get('/api/v1/users/me', [
     'middlewares' => [
         'api',
-        'jwt-auth'
+        'user-basic-auth'
     ],
     function($request) {
         return new Response(200, Api\User::getCurrentUser($request), 'application/json');
@@ -29,7 +29,7 @@ $obRouter->get('/api/v1/users/me', [
 $obRouter->get('/api/v1/users/{id}', [
     'middlewares' => [
         'api',
-        'cache'
+        'user-basic-auth'
     ],
     function($request, $id) {
         return new Response(200, Api\User::getUser($request, $id), 'application/json');
@@ -39,8 +39,7 @@ $obRouter->get('/api/v1/users/{id}', [
 // ROTA CADASTRO DE USUARIOS
 $obRouter->post('/api/v1/users/new', [
     'middlewares' => [
-        'api',
-        'user-basic-auth'
+        'api'
     ],
     function($request) {
         return new Response(201, Api\User::setNewUser($request), 'application/json');

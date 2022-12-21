@@ -4,9 +4,12 @@ namespace App\Controller\Pages;
 
 use App\Http\Request;
 use App\Models\Turma as EntityGrade;
+use App\Models\Admin as EntityAdmin;
+use App\Models\Setor as EntitySector;
 use App\Models\Aluno as EntityStudent;
-use App\Models\Professor as EntityTeacher;
 use App\Models\Usuario as EntityUser;
+use App\Models\Professor as EntityTeacher;
+use App\Models\GrupoAluno as EntityGroupStudent;
 use App\Utils\Tools\Alert;
 use App\Utils\Sanitize;
 use App\Utils\Session;
@@ -21,7 +24,7 @@ class Profile extends Page {
      * 
      * @return string
      */
-    public static function getEditProfile(Request $request) {
+    public static function getEditProfile(Request $request): string {
         // OBTEM A IMAGEM DO USUARIO
         $obUser = EntityUser::getUserById(Session::getId());
 
@@ -29,12 +32,12 @@ class Profile extends Page {
 
         // VIEW DA HOME
         $content = View::render('pages/profile', [
-            'status' => Alert::getStatus($request),
-            'foto'   => $obUser->getImg_perfil(),
-            'nome'   => $obUser->getNom_usuario(),
-            'email'  => $obUser->getEmail(),
-            'texto'  => $view['text'],
-            'campo'  => $view['colum']
+            'status'   => Alert::getStatus($request),
+            'foto'     => $obUser->getImg_perfil(),
+            'nome'     => $obUser->getNom_usuario(),
+            'email'    => $obUser->getEmail(),
+            'texto'    => $view['text'],
+            'campo'    => $view['column']
         ]);
         // RETORNA A VIEW DA PAGINA
         return parent::getPage('Perfil', $content);
@@ -49,39 +52,54 @@ class Profile extends Page {
     public static function getTextType(EntityUser $obUser): array {
         // DECLARAÇÃO DE VARIAVEIS
         $text = '';
-        $colum = '';
+        $column = '';
 
         // RELATIVO NIVEL DE ACESSO DO USUARIO
         switch ($obUser->getFk_acesso()) {
             case 2:
-                $text = 'Matricula';
-                $colum = View::render('pages/components/profile/enrollment');
+                $text = 'Matrícula';
+                $column = View::render('pages/components/profile/enrollment');
 
                 break;
 
             case 3:
-                $class = EntityUser::getUserClass(Session::getId());
+                // DECLARAÇÃO DE VARIAVEIS
                 $text = 'Turma';
-                
+                $hidden = '';
+
+                // CONSULTA A TURMA DO ALUNO
+                $class = $obUser->getUserClass($obUser->getId_usuario());
+
                 if (!empty($class)) {
-                    $colum = View::render('pages/components/profile/class', [
-                        'curso'  => $class['curso'],
-                        'modulo' => $class['modulo']
-                    ]);
+                    $hidden = parent::setHiddens($class);
                 }
+
+                $column = View::render('pages/components/profile/class', [
+                    'hidden'   => $hidden,
+                    'curso'    => self::getCourse(),
+                    'modulo'   => self::getModule()
+                ]);
+
                 break;
 
             case 4:
+                // CONSULTA O SETOR DO SERVIDOR
+                $setor = $obUser->getUserSector($obUser->getId_usuario());
+
                 $text = 'Setor';
-                $colum = View::render('pages/components/profile/sector');
+                $column = View::render('pages/components/profile/sector', [
+                    'h-setor' => $setor['setor'],
+                    'setor'   => self::getSector()
+                ]);
                 
                 break;
                 
             case 5:
+                // CONSULTA OS DADOS DO PROFESSOR
                 $obTeacher = EntityTeacher::getTeacherById($obUser->getId_usuario());
                 $text = 'Regras';
 
-                $colum = View::render('pages/components/profile/rules', [
+                $column = View::render('pages/components/profile/rules', [
                     'regras' => $obTeacher->getRules()
                 ]);
 
@@ -90,7 +108,7 @@ class Profile extends Page {
         // RETORNA O TEXTO E A VIEW DA COLUNA
         return [
             'text'  => $text,
-            'colum' => $colum
+            'column' => $column
         ];
     }
 
@@ -114,16 +132,45 @@ class Profile extends Page {
 
         // OBTEM O USUARIO E O NIVEL DE ACESSO DA SESSÃO
         $obUser = Session::getUser();
+    
+        // LAMBDA - VERIFICA SE EXISTE UM STATUS DE ERRO
+        $isError = function($key) use ($request): void {
+            if (!empty($key)) {
+                $request->getRouter()->redirect("/profile?status=$key");
+            }
+        };
+        // NOVA INSTANCIA DE UPLOAD
+        $obUpload = new Upload($files['foto']);
 
+        // OBTEM O NOME DA IMAGEM DO USUARIO
         $photo = $obUser->getImg_perfil();
 
-        $nome = $postVars['nome'];
-        $email = $postVars['email'];
+        // VERIFICA SE O ARQUIVO EXISTEM NO ARMAZENAMENTO TEMPORARIO
+        if (file_exists($obUpload->getTpmName())) {
+            // VERIFICA SE É O PRIMEIRO UPLOAD 
+            if ($photo == 'user.png') {
+                $obUpload->generateNewName();
+            } 
+            else {
+                // OBTEM AS INFORMAÇÕES DO ARQUIVO
+                $info = pathinfo($photo);
 
-        self::updateProfilePicture($request, $photo, $files['foto']);
+                if ($obUpload->getExtension() != $info['extension']) {
+                    unlink(__DIR__."/../../../public/uploads/".$photo);
+                }
+                // ATRIBUI O NOME AO JA EXISTENTE DO USUARIO
+                $obUpload->setName($photo);
+            }
+            $isError(Upload::profilePicture($obUpload));
+        }
+        // ATUALIZA A VARIAVEL COM O NOME DA FOTO     
+        $photo = $obUpload->getBasename();
 
         // ATUALIZA O CAMPO DO TIPO USUARIO
         self::updateProfileUser($request, $obUser, $postVars);
+
+        $nome = $postVars['nome'];
+        $email = $postVars['email'];
 
         // VALIDA O NOME
         if (Sanitize::validateName($nome)) {
@@ -152,87 +199,70 @@ class Profile extends Page {
     }
 
     /**
-     * Método responsavel por realizar o upload da imagem enviada pelo usuario
-     * @param \App\Http\Request $request
-     * @param string $photo
-     * @param array $file
-     * 
-     * @return void
-     */
-    private static function updateProfilePicture($request, &$photo, $file): void {
-        // NOVA INSTANCIA 
-        $obUpload = new Upload($file);
-
-        // VERIFICA SE HOUVE UPLOAD DE FOTO
-        if (is_uploaded_file($obUpload->tmpName) && $obUpload->error != 4) { 
-            // VERIFICA SE O ARQUIVO E MENOR DO QUE O ACEITO
-            if ($_POST['MAX_FILE_SIZE'] > $obUpload->size) {
-                // VARIFICA SE O USUARIO POSSUI UMA FOTO
-                if ($photo == 'user.png') {
-                    $obUpload->generateNewName();      // GERA UM NOME NOVO
-                    $photo = $obUpload->getBasename(); // OBTEM O NOME NOVO
-                } 
-                else {
-                    // ATRIBUI O NOME AO JA EXISTENTE DO USUARIO
-                    $obUpload->name = pathinfo($photo, PATHINFO_FILENAME);
-                }
-                // FAZ O UPLOAD DA FOTO PARA PASTA DE UPLOADS
-                if (!$obUpload->upload(__DIR__.'/../../../public/uploads/')) {
-                    $request->getRouter()->redirect('/profile?status=upload_error');
-                }
-            }
-        }
-    } 
-    
-    /**
-     * Método responsavel por realizar uma operação relativo ao tipo de usuario atual
+     * Método responsável por realizar uma operação relativo ao tipo de usuário atual
      * @param \App\Http\Request $request
      * @param \App\Models\Usuario  $obUser
      * @param array $postVars
+     * 
+     * @return void
      */
-    private static function updateProfileUser(Request $request, EntityUser $obUser, array $postVars) {
-        // REALIZA UMA AÇÃO DEPENDENDO DO TIPO DE USUARIO
-        switch (Session::getLv()) {
-            // USUARIO
+    private static function updateProfileUser(Request $request, EntityUser $obUser, array $postVars): void {
+        // REALIZA UMA AÇÃO DEPENDENDO DO TIPO DE USUÁRIO
+        switch ($obUser->getFk_acesso()) {
+            // USUÁRIO
             case 2:
                 if (!empty($postVars['matricula'])) {
-                    // NOVA INSTANCIA
+                    // NOVA INSTÂNCIA
                     $obStudent = new EntityStudent;
         
                     $obStudent->setFk_id_usuario($obUser->getId_usuario());
                     $obStudent->setNum_matricula($postVars['matricula']);
                 
-                    // VERIFICA SE A MATRICULA ESTA DISPONIVEL
+                    // VERIFICA SE A MATRÍCULA ESTA DISPONIVEL
                     if (!$obStudent->verifyEnrollment()) {
                         $request->getRouter()->redirect('/profile?status=enrollment_duplicated');
                     } 
-                    // INSERE O USUARIO NA TABELA DE ALUNOS
+                    // INSERE O USUÁRIO NA TABELA DE ALUNOS
                     $obStudent->insertStudent();
                 }
-                // ALTERA O NIVEL DE ACESSO PARA 3 (ALUNO)
+
+                // ALTERA O NÍVEL DE ACESSO PARA 3 (ALUNO)
                 $obUser->setFk_acesso(3); 
                 
                 break;
                 
             // ALUNO
             case 3:
-                // VERIFICA SE O CURSO E O MODULO FORAM RECEBIDOS
+                // VERIFICA SE O CURSO E O MÓDULO FORAM RECEBIDOS
                 if (!empty($postVars['curso']) && !empty($postVars['modulo'])) {
-                    // BUSCA O ID DA TURMA POR CURSO E MODULO
-                    $gradeId = EntityGrade::getGradeId($postVars['curso'], $postVars['modulo']);
-
-                    // NOVA INSTANCIA
-                    $obStudent = new EntityStudent;
+                    // NOVA INSTÂNCIA
+                    $obGroupStudent = new EntityGroupStudent;
  
-                    $obStudent->setFk_id_usuario($obUser->getId_usuario());
-                    $obStudent->setFk_id_turma($gradeId['id_turma']);
+                    $obGroupStudent->setFk_id_usuario($obUser->getId_usuario());
+                    $grupo = $obGroupStudent->getFk_id_grupo();
 
-                    $obStudent->updateStudent(); // ATUALIZA A TURMA DO ALUNO
+                    if ($grupo != 0) {
+                        $obGroupStudent->updateGroupStudent(); // ATUALIZA A TURMA DO ALUNO
+                    } else {
+                        $obGroupStudent->findGroup((int)$postVars['curso'], (int)$postVars['modulo']);
+
+                        $obGroupStudent->insertGroupStudent();
+                    }
                 }
+
                 break;
 
             // SERVIDOR
             case 4:
+                if (!empty($postVars['setor'])) {
+                    $obAdmin = new EntityAdmin;
+
+                    $obAdmin->setFk_id_usuario($obUser->getId_usuario());
+                    $obAdmin->setFk_id_setor($postVars['setor']);
+
+                    $obAdmin->updateAdmin();
+                }
+
                 break;
 
             // PROFESSOR
@@ -246,8 +276,69 @@ class Profile extends Page {
                     $obTeacher->setRules($postVars['regras']);
 
                     $obTeacher->updateRules(); // ATUALIZA AS REGRAS DO PROFESSOR
-                }         
+                }
+
                 break;
         }
+    }
+
+    /**
+     * Método responsável por retornar a view dos setores
+     * @return string
+     */
+    public static function getSector(): string {
+        // DECLARAÇÃO DE VARIÁVEIS
+        $content = '';
+
+        // ARRAY COM TODOS OS SETORES CADASTRADOS
+        $setores = EntitySector::getSector();
+
+        for ($i = 0; $i < count($setores); $i++) {
+            $content .= View::render('pages/components/profile/sector-item', [
+                'id'    => $setores[$i]['id_setor'],
+                'setor' => $setores[$i]['dsc_setor']
+            ]);
+        }
+        // RETORNA O CONTEÚDO
+        return $content;
+    }
+
+    /**
+     * Método responsável por retornar a view dos cursos
+     * @return string
+     */
+    public static function getCourse(): string {
+        // DECLARAÇÃO DE VARIÁVEIS
+        $content = '';
+
+        // ARRAY COM TODOS OS CURSOS CADASTRADOS
+        $cursos = EntityGrade::getCursos();
+
+        for ($i = 0; $i < count($cursos); $i++) {
+            $content .= View::render('pages/components/profile/course', [
+                'id'       => $cursos[$i]['id_curso'],
+                'curso'    => $cursos[$i]['dsc_curso']
+            ]);
+        }
+        // RETORNA O CONTEÚDO
+        return $content;
+    }
+
+    /**
+     * Método responsável por retornar a view dos módulos
+     * @return string
+     */
+    public static function getModule(): string {
+        // DECLARAÇÃO DE VARIÁVEIS
+        $content = '';
+
+        for ($i = 1; $i < 7; $i++) {
+            $content .= View::render('pages/components/profile/module', [
+                'id'       => "$i",
+                'modulo'   => "$i"
+            ]);
+        }
+        // RETORNA O CONTEÚDO
+        return $content;
     }
 }

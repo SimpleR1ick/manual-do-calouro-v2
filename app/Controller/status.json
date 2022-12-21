@@ -84,10 +84,6 @@
         "type": "danger",
         "text": "Matrícula já registrada!"
     },
-    "upload_error": {
-        "type": "danger",
-        "text": "Erro no upload da foto!"
-    },
     "contact_registered": {
         "type": "success",
         "text": "Contato cadastrado com sucesso"
@@ -99,5 +95,57 @@
     "contact_deleted": {
         "type": "success",
         "text": "Contato excluido com sucesso!"
+    },
+    "comment_deleted": {
+        "type": "success",
+        "text": "Comentario excluido com sucesso!"
+    },
+    "upload_error": {
+        "type": "danger",
+        "text": "Erro no upload da foto!"
+    },
+    "image_type": {
+        "type": "danger",
+        "text": "Somente PNG e JPEG são permitidos."
+    },
+    "image_syze": {
+        "type": "danger",
+        "text": "O tamanho da imagem excede 2 MB"
+    },
+    "image_erro": {
+        "type": "danger",
+        "text": "Problema no upload de imagem."
+    },
+    "event_registered": {
+        "type": "success",
+        "text": "Evento cadastrado com sucesso!."
+    },
+    "event_updated": {
+        "type": "success",
+        "text": "Evento atualizado com sucesso!."
+    }
+    ,"event_deleted": {
+        "type": "success",
+        "text": "Evento excluido com sucesso!."
+    },
+    "schedule_registered": {
+        "type": "success",
+        "text": "Aula cadastrado com sucesso!."
+    },
+    "schedule_updated": {
+        "type": "success",
+        "text": "Aula atualizado com sucesso!."
+    }
+    ,"schedule_deleted": {
+        "type": "success",
+        "text": "Aula excluido com sucesso!."
+    },
+    "non_existent": {
+        "type": "danger",
+        "text": "Sala de aula não encontrada :(."
+    },
+    "delete_error": {
+        "type": "danger",
+        "text": "Erro ao excluir a conta."
     }
 }

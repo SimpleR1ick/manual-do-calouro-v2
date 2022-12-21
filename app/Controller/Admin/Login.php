@@ -11,7 +11,7 @@ use App\Utils\Session;
 class Login extends Page {
 
     /**
-     * Methodo retornar a rendenização da pagina de login
+     * Método responsável por retornar a renderização da página de login
      * @param \App\Http\Request $request
      * @param  string $errorMessage
      * 
@@ -27,7 +27,7 @@ class Login extends Page {
     }
 
     /**
-     * Methodo responsavel por definir o login do usuario
+     * Método responsável por definir o login do usuário
      * @param \App\Http\Request
      * 
      * @return void
@@ -39,12 +39,10 @@ class Login extends Page {
         $email = $postVars['email'] ?? '';
         $senha = $postVars['senha'] ?? '';
 
-        $msg = 'E-mail ou senha inválidos!';
-
         // BUSCA USUARIO PELO EMAIL
         $obUser = EntityUser::getUserByEmail($email);
         
-        // VALIDA A INSTANCIA
+        // VALIDA A INSTÂNCIA
         if (!$obUser instanceof EntityUser) {
             $request->getRouter()->redirect('/admin/login?status=invalid_data');
         }
@@ -52,7 +50,7 @@ class Login extends Page {
         if (!password_verify($senha, $obUser->getSenha())) {
             $request->getRouter()->redirect('/admin/login?status=invalid_data');
         }
-        // VERIFICA SE O USUARIO POSSUI O ACESSO NECESSARIO
+        // VERIFICA SE O USUARIO POSSUI O ACESSO NECESSÁRIO
         if ($obUser->getFk_acesso() != 1) {
             $request->getRouter()->redirect('/admin/login?status=invalid_acess');
         }
@@ -64,7 +62,7 @@ class Login extends Page {
     }
 
     /**
-     * Mehtodo responsavel por deslogar o usuario
+     * Methodo responsavel por deslogar o usuário
      * @param \App\Http\Request
      * 
      * @return void

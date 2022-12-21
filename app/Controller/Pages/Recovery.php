@@ -78,7 +78,7 @@ class Recovery extends Page {
     }
 
     /**
-     * Undocumented function
+     * Método responsável por enviar um email com o link chave de recuperação
      * @param \App\Models\Chave $obHash
      * @param string $email
      * 
@@ -91,7 +91,7 @@ class Recovery extends Page {
 
         // ASSUNTO E MENSAGEM
         $subject = 'Recuperar senha';
-        $message = 'Para recuperar sua senha, acesse este link: '.$link;
+        $message = 'Para recuperar sua senha, acesse esse link: '.$link;
 
         $obEmail = new Email;
 

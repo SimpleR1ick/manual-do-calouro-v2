@@ -1,14 +1,17 @@
 <tr>
     <td>{{id}}</td>
-    <td>{{nome}}</td>
-    <td>{{mensagem}}</td>
+    <td>{{user}}</td>
+    <td><textarea class="crudComment" rows="2" cols="40" disabled>{{mensagem}}</textarea></td>
     <td>{{data}}</td>
     <td>
-        <a href="{{URL}}/admin/testimonies/{{id}}/edit">
-            <button class="btn btn-primary" type="button">Editar</button>
-        </a>
-        <a href="{{URL}}/admin/testimonies/{{id}}/delete">
-            <button class="btn btn-danger" type="button">Excluir</button>
-        </a>
+        <a type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#verComentario" {{edit}}>
+			<i class="fa-regular fa-eye text-light"></i>
+       </a>
+    </td>
+    <td>
+        <a class="btn btn-danger btn-sm text-center" href="{{URL}}/admin/comments/del"
+			data-bs-toggle="modal" data-bs-target="#modal-delete" {{click}} >
+      		<i class="fa-solid fa-trash"></i>
+    	</a>
     </td>
 </tr>

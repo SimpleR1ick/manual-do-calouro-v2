@@ -5,19 +5,19 @@ namespace App\Http;
 class Request {
 
     /**
-     * Instancia do Router
+     * Instância do Router
      * @var Router 
      */
     private $router;
 
     /**
-     * Méthodo HTTP da requisição
+     * Método HTTP da requisição
      * @var string 
      */
     private $httpMethod;
 
     /**
-     * Parametros da URL ($_GET)
+     * Parâmetros da URL ($_GET)
      * @var array
      */
     private $queryParams = [];
@@ -35,19 +35,19 @@ class Request {
     private $headers = [];
 
     /**
-     * Váriaveis recebidas no POST da pagina ($_POST)
+     * Variáveis recebidas no POST da página ($_POST)
      * @var array
      */
     private $postVars = [];
 
      /**
-     * URI da pagina
+     * URI da página
      * @var string
      */
     private $uri;
 
     /**
-     * Instancia de User
+     * Instância de Usuario na request
      * @var \App\Models\Usuario
      */
     public $user;
@@ -66,7 +66,11 @@ class Request {
     }
 
     /**
-     * Metodo responsavel por retornar a instancia de router
+     * Método GETTERS e SETTERS
+     */
+
+    /**
+     * Método responsável por retornar a instância de router
      * @return Router
      */
     public function getRouter(): Router {
@@ -74,7 +78,7 @@ class Request {
     }
 
     /**
-     * Método responsavel por retornar ó methodo HTTP
+     * Método responsável por retornar  método HTTP
      * @return string
      */
     public function getHttpMethod(): string {
@@ -82,7 +86,7 @@ class Request {
     }
 
     /**
-     * Método responsavel por retornar os parametros da url da requisição
+     * Método responsável por retornar os parâmetros da url da requisição
      * @return array
      */
     public function getQueryParams(): array {
@@ -90,7 +94,7 @@ class Request {
     }
 
     /**
-     * Metodo responsavel por retornar os arquivos recebidos no post
+     * Método responsável por retornar os arquivos recebidos no post
      * @return array
      */
     public function getUploadFiles(): array {
@@ -98,7 +102,7 @@ class Request {
     }
 
     /**
-     * Método responsavel por retornar os headers da requisição
+     * Método responsável por retornar os headers da requisição
      * @return array
      */
     public function getHeaders(): array {
@@ -106,7 +110,7 @@ class Request {
     }
 
     /**
-     * Metodo responsavel por definir as variaveis do post
+     * Método responsável por definir as variáveis do post
      * @return boolean
      */
     private function setPostVars(): bool {
@@ -128,7 +132,7 @@ class Request {
     }
 
     /**
-     * Método responsavel por retornar as variaveis POST da requisição
+     * Método responsável por retornar as variáveis POST da requisição
      * @return array
      */
     public function getPostVars(): array {
@@ -136,7 +140,7 @@ class Request {
     }
 
     /**
-     * Metodo responsavel por definir a URI
+     * Método responsável por definir a URI
      * @return void
      */
     private function setUri(): void {
@@ -149,7 +153,7 @@ class Request {
     }
 
     /**
-     * Método responsavel por retornar a URI da requisição
+     * Método responsável por retornar a URI da requisição
      * @return string
      */
     public function getUri(): string {

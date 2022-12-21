@@ -2,7 +2,10 @@
 
 namespace App\Controller\Pages;
 
+use App\Http\Request;
 use App\Models\Comentario as EntityComment;
+use App\Utils\Sanitize;
+use App\Utils\Session;
 use App\Utils\View;
 use App\Utils\Pagination;
 
@@ -12,10 +15,20 @@ class Home extends Page {
      * Método responsável por retornar o contéudo (view) da página home
      * @return string
      */
-    public static function getHome() {
-        // VIEW DA HOME
-        $content = View::render('pages/home');
+    public static function getHome($request) {
+        
+        $form = '<p>Faça login para comentar</p>';
 
+        if (Session::isLogged()) {
+            $form = View::render('pages/components/home/form');
+        }
+
+        // VIEW DA HOME
+        $content = View::render('pages/home', [
+            'formulario'  => $form,
+            'comentarios' => self::getCommentsItems($request, $obPagination),
+            'pagination'  => parent::getPagination($request, $obPagination)
+        ]);
         // RETORNA A VIEW DA PAGINA
         return parent::getPage('Home', $content, 'home');
     }
@@ -42,57 +55,50 @@ class Home extends Page {
         $obPagination = new Pagination($quantidadeTotal, $paginaAtual, 3);
 
         // RESULTADOS DA PAGINA
-        $results = EntityComment::getComments(null, 'id DESC', $obPagination->getLimit());
+        $results = EntityComment::getDscComments('id_comentario DESC', $obPagination->getLimit());
 
-        // RENDENIZA O ITEM
-        while ($obComment = $results->fetchObject(EntityComment::class)) {
+        // VERIFICA SE A IMAGEM ESTA VAZIA
+        $image = function($img) {
+            return !empty($img) ? $img : 'user.png';
+        };
+
+        // RENDERIZA O ITEM
+        while ($obComment = $results->fetch(\PDO::FETCH_ASSOC)) {
             // VIEW De DEPOIMENTOSS
-            $itens .= View::render('pages/components/comment/item',[
-                'nome' => $obComment->nome,
-                'mensagem' => $obComment->mensagem,
-                'data' => date('d/m/Y H:i:s',strtotime($obComment->data))
+            $itens .= View::render('pages/components/home/comment',[
+                'imagem' => $image($obComment['img_perfil']),
+                'data'   => $obComment['dt_comentario'],
+                'nome'   => $obComment['nom_usuario'],
+                'texto'  => $obComment['dsc_comentario']
             ]);
         }
-
         // RETORNA OS DEPOIMENTOS
         return $itens;
     }
 
     /**
-     * Método responsável por retornar o contéudo (view) de depoimenots
-     * @param \App\Http\Request $request
      * 
-     * @return string 
-     */
-    public static function getComments($request){
-        // VIEW De DEPOIMENTOSS
-        $content =  View::render('pages/testimonies',[
-           'itens' => self::getCommentsItems($request, $obPagination),
-           'pagination' => parent::getPagination($request, $obPagination)
-        ]);
-
-        // RETORNA A VIEW DA PAGINA
-        return parent::getPage('DEPOIMENTOS > WDEV', $content);
-    }
-
-    /**
-     * Método responsável por cadastrar um depoimento
-     * @param \App\Http\Request $request
      * 
-     * @return string
      */
-    public static function insertTestimony($request) {
-        // DADOS DO POST
+    public static function setNewComment(Request $request): void {
+        // POST VARS
         $postVars = $request->getPostVars();
 
-        // NOVA INSTANCIA
+        // VERIFICA HTML INJECT
+        if (Sanitize::validateForm($postVars)) {
+            $request->getRouter()->redirect('/signup?status=invalid_chars');
+        }
+        // SANITIZA O ARRAY
+        $postVars = Sanitize::sanitizeForm($postVars); 
+
         $obComment = new EntityComment;
-        $obComment->nome = $postVars['nome'];
-        $obComment->mensagem = $postVars['mensagem'];
+
+        $obComment->setFK_id_usuario(Session::getId());
+        $obComment->setDsc_comentario($postVars['mensagem']);
+        $obComment->setDt_comentario();
 
         $obComment->insertComment();
 
-        // RETORNA A PAGINA DE LISTAGEM DE DEPOIMENTOS
-        return self::getComments($request);
+        $request->getRouter()->redirect('/?status=comment_registered');
     }
 }

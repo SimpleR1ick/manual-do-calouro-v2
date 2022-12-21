@@ -16,30 +16,26 @@ class Page {
             'label' => 'Home',
             'link'  => URL.'/admin'
         ],
-        'users' => [
-            'label' => 'Usuários',
-            'link'  => URL.'/admin/users'
-        ],
         'comments' => [
             'label' => 'Comentários',
             'link'  => URL.'/admin/comments'
         ],
-        'calendar' => [
+        'users' => [
+            'label' => 'Usuários',
+            'link'  => URL.'/admin/users'
+        ],
+        'events' => [
             'label' => 'Eventos',
-            'link'  => URL.'/admin/calendar'
+            'link'  => URL.'/admin/events'
         ],
-        'schedule' => [
-            'label' => 'Horarios',
-            'link'  => URL.'/admin/schedule'
-        ],
-        'contacts' => [
-            'label' => 'Contatos',
-            'link'  => URL.'/admin/contacts' 
+        'schedules' => [
+            'label' => 'Aulas',
+            'link'  => URL.'/admin/schedules'
         ]
     ];
 
     /**
-     * Methodo responsavel por retornar o conteudo (view) estrutura generica do painel
+     * Método responsável por retornar o conteúdo (view) estrutura genérica do painel
      * @param  string $tittle
      * @param  string $content
      * 
@@ -53,7 +49,7 @@ class Page {
     }
 
     /**
-     * Methodo responsavel por rendenizar a view do painel
+     * Método responsável por renderizar a view do painel
      * @param  string $currentModule
      * 
      * @return string
@@ -70,14 +66,14 @@ class Page {
                 'current' => $hash == $currentModule ? 'text-success' : ''
             ]);
         }
-        // RETORNA A RENDENIZAÇÃO DO MENU
+        // RETORNA A RENDERIZAÇÃO DO MENU
         return View::render('admin/menu/box', [
             'links' => $links
         ]); 
     }
 
     /**
-     * Methodo responsavel por rendenizar a view do painel com conteudos dinamicos
+     * Método responsável por renderizar a view do painel com conteudos dinâmicos
      * @param  string $title
      * @param  string $contenct
      * @param  string $currentModule
@@ -85,18 +81,41 @@ class Page {
      * @return string
      */
     public static function getPanel(string $tittle, string $content, string $currentModule): string {
-        // RENDENIZA A VIEW DO PAINEL
+        // RENDERIZA A VIEW DO PAINEL
         $contentPanel = View::render('admin/panel', [
             'menu' => self::getMenu($currentModule),
             'content' => $content
         ]);
 
-        // RETORNA A PAGINA RENDENIZADA
+        // RETORNA A PÁGINA RENDERIZADA
         return self::getPage($tittle, $contentPanel);
     }
 
     /**
-     * Methodo responsavel por retornar um link da paginação
+     * Método responsavel por renderizar os input hidden
+     * @param array $array
+     * 
+     * @return string
+     */
+    protected static function setHiddens(array $array): string {
+        // INICIALIZAÇÃO DE VARIAVEL
+        $content = '';
+
+        
+        for ($i = 0; $i < count($array); $i++) {
+            $keys = array_keys($array);
+
+            $content .= View::render('/shared/hidden', [
+                'id'    => $keys[$i],
+                'value' => $array[$keys[$i]]
+            ]);
+        }
+        // RETORNA O CONTEUDO
+        return $content;
+    }
+
+    /**
+     * Método responsável por retornar um link da paginação
      * @param array  $queryParams
      * @param array  $page
      * @param string $url
@@ -120,7 +139,7 @@ class Page {
     }
     
     /**
-     * Methodo responsavel por rendenizar o layout de paginação
+     * Método responsável por renderizar o layout de paginação
      * @param \App\Http\Request $request
      * @param \App\Utils\Pagination $obPagination
      * 
@@ -167,7 +186,7 @@ class Page {
             $links .= self::getPaginationLink($queryParams, reset($pages), $url, '<<'); 
         }
 
-        // RENDENIZA OS LINKS
+        // RENDERIZA OS LINKS
         foreach ($pages as $page) {
             // VERIFICA O STRAT DA PAGINAÇÃO
             if ($page['page'] <= $start) continue;

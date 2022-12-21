@@ -1,11 +1,5 @@
-<h1>Depoimentos</h1>
-<p>Depoimentos enviados pelos usuarios</p>
-
-<hr />
-
-<a href="{{URL}}/admin/testimonies/new">
-    <button class="btn btn-success" type="button">Cadastrar depoimento</button>
-</a>
+<h1>Comentarios</h1>
+<p>Comentarios enviados pelos usuarios</p>
 
 <hr />
 
@@ -15,10 +9,11 @@
     <thead class="">
         <tr>
             <th>ID</th>
-            <th style="width: 200px">Nome</th>
+            <th style="width: 200px">Usuario</th>
             <th>Texto</th>
             <th>Data</th>
-            <th style="width: 200px">Ações</th>
+            <th></th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -27,3 +22,62 @@
 </table>
 
 {{pagination}}
+  
+<!-- Modal -->
+<div class="modal fade text-dark" id="verComentario" tabindex="-1" aria-labelledby="verComentarioLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="verComentarioLabel">Ver comentário</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                
+                <div class="mb-3">
+                    <label for="usuario" class="form-label">Usuário</label>
+                    <input type="text" class="form-control" id="usuario" value="" disabled>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="data" class="form-label">Data</label>
+                    <input type="text" class="form-control" id="data" value="" disabled>
+                </div>
+
+                <div class="mb-3">
+                    <label for="texto" class="form-label">Comentário</label>
+                    <textarea class="form-control" id="texto" rows="5" disabled></textarea>
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Voltar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-delete" tabindex="-1" aria-labelledby="tituloModal" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title text-black">Deseja mesmo excluir esse item?</h5>
+				<button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-footer">
+				<form action="{{URL}}/admin/comments/del" method="POST">
+					<input type="hidden" name="id" id="id">
+
+					<button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Voltar</button>
+					<button class="btn btn-danger" type="submit">Deletar</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script src="{{URL}}/resources/js/admin.js"></script>
+
+<script src="{{URL}}/resources/js/comentario.js"></script>

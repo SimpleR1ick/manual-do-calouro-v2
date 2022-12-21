@@ -3,15 +3,18 @@
 namespace App\Controller\Admin;
 
 use App\Http\Request;
-use App\Models\Usuario as EntityUser;
-use App\Utils\Tools\Alert;
 use App\Utils\View;
 use App\Utils\Pagination;
+use App\Models\Admin as EntityAdmin;
+use App\Models\Usuario as EntityUser;
+use App\Models\Servidor as EntityServer;
+use App\Models\Professor as EntityTeacher;
+use App\Utils\Tools\Alert;
 
 class User extends Page {
 
     /**
-     * Método responsavel por obter a rendenização dos items de usuarios para página
+     * Método responsável por obter a renderização dos items de usuários para página
      * @param \App\Http\Request $request
      * @param \App\Utils\Pagination $obPagination
      * 
@@ -34,18 +37,14 @@ class User extends Page {
         // RESULTADOS DA PAGINA
         $results = EntityUser::getUsers(null, 'id_usuario DESC', $obPagination->getLimit());
 
-        // RENDENIZA O ITEM
+        // RENDERIZA O ITEM
         while ($obUser = $results->fetchObject(EntityUser::class)) {
-            $modal = View::render('admin/modules/users/delete',[
-                'id' => $obUser->getId_usuario()
-            ]);
-
             // VIEW De DEPOIMENTOSS
             $itens .= View::render('admin/modules/users/item',[
+                'click' => "onclick=deleteItem({$obUser->getId_usuario()})",
                 'id'    => $obUser->getId_usuario(),
                 'nome'  => $obUser->getNom_usuario(),
                 'email' => $obUser->getEmail(),
-                'modal' => $modal
             ]);
         }
 
@@ -54,7 +53,7 @@ class User extends Page {
     }
 
     /**
-     * Método responsavel por rendenizar a view de listagem de usuarios
+     * Método responsável por renderizar a view de listagem de usuários
      * @param \App\Http\Request
      * 
      * @return string
@@ -68,11 +67,11 @@ class User extends Page {
         ]);
 
         // RETORNA A PAGINA COMPLETA
-        return parent::getPanel('Usuarios > MDC', $content, 'users');
+        return parent::getPanel('Usuários > MDC', $content, 'users');
     }
 
     /**
-     * Método responsavel por retornar o formulario de cadastro de um novo usuario
+     * Método responsável por retornar o formulário de cadastro de um novo usuário
      * @param \App\Http\Request
      * 
      * @return string
@@ -80,7 +79,7 @@ class User extends Page {
     public static function getNewUser(Request $request): string {
         // CONTEUDO DO FORMULARIO
         $content = View::render('admin/modules/users/form', [
-            'tittle'   => 'Cadastrar usuario',
+            'tittle'   => 'Cadastrar Usuário',
             'status'   => Alert::getStatus($request),
             'nome'     => '',
             'email'    => '',
@@ -91,11 +90,11 @@ class User extends Page {
         ]);
 
         // RETORNA A PAGINA COMPLETA
-        return parent::getPanel('Cadastrar usuario > MDC', $content, 'users');
+        return parent::getPanel('Cadastrar Usuário > MDC', $content, 'users');
     }
 
     /**
-     * Método responsavel por cadastrar um usuario no banco
+     * Método responsável por cadastrar um usuário no banco
      * @param \App\Http\Request
      * 
      * @return void
@@ -110,13 +109,13 @@ class User extends Page {
         $status = $postVars['status'] ?? '';
         $ativo  = $postVars['active'] ?? '';
 
-        // VALIDA O EMAIL DO USUARIO
+        // VALIDA O EMAIL DO USUÁRIO
         $obUser = EntityUser::getUserByEmail($email);
 
         if ($obUser instanceof EntityUser) {
             $request->getRouter()->redirect('/admin/users/new?status=duplicated_email');
         }
-        // NOVA INSTANCIA DE USUARIO
+        // NOVA INSTANCIA DE USUÁRIO
         $obUser = new EntityUser;
         $obUser->setNom_usuario($nome);
         $obUser->setEmail($email);
@@ -126,12 +125,14 @@ class User extends Page {
 
         $obUser->insertUser();
 
-        // REDIRECIONA O USUARIO
+        self::registerByUserType($obUser);
+
+        // REDIRECIONA O USUÁRIO
         $request->getRouter()->redirect('/admin/users/edit/'.$obUser->getId_usuario().'?status=user_registered');
     }
 
     /**
-     * Método responsavel por retornar o formulario edição de um usuario
+     * Método responsável por retornar o formulário de edição de um usuário
      * @param \App\Http\Request
      * @param integer $id
      * 
@@ -144,7 +145,7 @@ class User extends Page {
             'inativo' => ''
         ];
         
-        // OBTENDO O USUARIO DO BANCO DE DADOS
+        // OBTENDO O USUÁRIO DO BANCO DE DADOS
         $obUser = EntityUser::getUserById($id);
 
         // VALIDA A INSTANCIA
@@ -155,29 +156,29 @@ class User extends Page {
 
         // CONTEUDO DO FORMULARIO
         $content = View::render('admin/modules/users/form', [
-            'tittle'  => 'Editar usuario',
+            'status'  => Alert::getStatus($request),
+            'tittle'  => 'Editar Usuário',
+            'botao'   => 'Atualizar',
             'nome'    => $obUser->getNom_usuario(),
             'email'   => $obUser->getEmail(),
-            'botao'   => 'Atualizar',
-            'status'  => Alert::getStatus($request),
+            'acesso'  => $obUser->getFk_acesso(),
             'ativo'   => $status['ativo'],
             'inativo' => $status['inativo'],
-            'acesso'  => $obUser->getFk_acesso()
         ]);
 
         // RETORNA A PAGINA COMPLETA
-        return parent::getPanel('Editar usuario  > WDEV', $content, 'users');
+        return parent::getPanel('Editar Usuário  > WDEV', $content, 'users');
     }
 
     /**
-     * Metodo responsavel por gravar a atualização de um usuario
+     * Método responsável por gravar a atualização de um usuário
      * @param \App\Http\Request
      * @param integer $id
      * 
      * @return void
      */
     public static function setEditUser(Request $request, int $id): void {
-        // OBTENDO O USUARIO DO BANCO DE DADOS
+        // OBTENDO O USUÁRIO DO BANCO DE DADOS
         $obUser = EntityUser::getUserById($id);
 
         // VALIDA A INSTANCIA
@@ -193,7 +194,7 @@ class User extends Page {
         $active = $postVars['active'] ?? '';
         $status = $postVars['status'] ?? '';
 
-        // VALIDA O EMAIL DO USUARIO
+        // VALIDA O EMAIL DO USUÁRIO
         $obUserEmail = EntityUser::getUserByEmail($email);
 
         if ($obUserEmail instanceof EntityUser && $obUserEmail->getId_usuario() != $id) {
@@ -209,12 +210,12 @@ class User extends Page {
 
         $obUser->updateUser();
 
-        // REDIRECIONA O USUARIO
+        // REDIRECIONA O USUÁRIO
         $request->getRouter()->redirect('/admin/users/edit/'.$id.'?status=user_updated');
     }
 
     /**
-     * Methodo responsavel por excluir um usuario
+     * Método responsável por excluir um usuário
      * @param \App\Http\Request
      * 
      * @return void
@@ -223,7 +224,7 @@ class User extends Page {
         // POST VARS
         $postVars = $request->getPostVars();
        
-        // OBTENDO O USUARIO DO BANCO DE DADOS
+        // OBTENDO O USUÁRIO DO BANCO DE DADOS
         $obUser = EntityUser::getUserById($postVars['id']);
 
         // VALIDA A INSTANCIA
@@ -233,7 +234,41 @@ class User extends Page {
         // EXCLUIR DEPOIMENTO
         $obUser->deleteUser();
 
-        // REDIRECIONA O USUARIO
+        // REDIRECIONA O USUÁRIO
         $request->getRouter()->redirect('/admin/users?status=user_deleted');
+    }
+
+    /**
+     * Método responsável por inserir um usuário professor e administrador nas tabelas de herança
+     * @param \App\Models\Usuario $obUser
+     * 
+     * @return void
+     */
+    private static function registerByUserType(EntityUser $obUser): void {
+        // OBTEM O ID DO USUÁRIO
+        $id = $obUser->getId_usuario();
+
+        // NOVA INSTANCIA DE SERVIDOR
+        $obServer = new EntityServer;
+        $obServer->setFk_id_usuario($id);
+        $obServer->setFk_id_sala(1);
+        $obServer->insertServer();
+
+        switch($obUser->getFk_acesso()) {
+            case 4: // ADMINISTRATIVO
+                $obAdmin = new EntityAdmin;
+                $obAdmin->setFk_id_usuario($id);
+                $obAdmin->setFk_id_setor(1);
+                $obAdmin->insertAdmin();
+
+                break;
+
+            case 5: // PROFESSOR
+                $obTeacher = new EntityTeacher;
+                $obTeacher->setFk_id_usuario($id);
+                $obTeacher->insertTeacher();
+
+                break;
+        }
     }
 }

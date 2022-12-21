@@ -1,0 +1,37 @@
+<h1 class="text-center">{{tittle}}</h1>
+
+<div class="row d-flex justify-content-center">
+    <div class="col-8">
+        {{status}}
+
+        <input type="hidden" id="h-campus" value="{{campus}}">
+        
+        <form method="POST">
+            <!-- DESCRICAO -->
+            <div class="mb-3">
+                <label class="form-label" for="descricao"> Descrição </label>
+                <input class="form-control" type="text" name="descricao" value="{{descricao}}" required>
+            </div>
+
+            <!-- DATA -->
+            <div class="mb-3">
+                <label class="form-label" for="data"> Data </label>
+                <input class="form-control" type="date" name="data" id="data" value="{{data}}" required>
+            </div>
+
+            <!-- CAMPUS -->
+            <div class="mb-3">
+                <label class="form-label" for="campus"> Campus </label>
+                <select class="form-select" name="campus" id="campus">
+                    <option selected>** Selecione uma opção **</option>
+                    <option value="1">Serra</option>
+                  </select>
+            </div>
+
+            <button class="btn btn-primary me-2" type="submit">{{botao}}</button>
+            <a href="{{URL}}/admin/events" class="btn btn-danger">Cancelar</a>
+        </form> 
+    </div>
+</div>
+
+<script src="{{URL}}/resources/js/events.js"></script>

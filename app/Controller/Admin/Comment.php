@@ -11,7 +11,7 @@ use App\Utils\Tools\Alert;
 class Comment extends Page {
 
     /**
-     * Methodo responsavel por obter a rendenização dos items de depoimentos para página
+     * Método responsável por obter a renderização dos items de depoimentos para página
      * @param \App\Http\Request $request
      * @param \App\Utils\Pagination $obPagination
      * 
@@ -32,138 +32,44 @@ class Comment extends Page {
         $obPagination = new Pagination($quantidadeTotal, $paginaAtual, 5);
 
         // RESULTADOS DA PAGINA
-        $results = EntityComment::getComments(null, 'id DESC', $obPagination->getLimit());
+        $results = EntityComment::getDscComments('id_comentario DESC', $obPagination->getLimit());
 
-        // RENDENIZA O ITEM
-        while ($obComment = $results->fetchObject(EntityComment::class)) {
+        // RENDERIZA O ITEM
+        while ($obComment = $results->fetch(\PDO::FETCH_ASSOC)) {
             // VIEW De DEPOIMENTOSS
-            $itens .= View::render('admin/modules/comment/item',[
-                'id'   => $obComment->id,
-                'nome' => $obComment->nome,
-                'mensagem' => $obComment->mensagem,
-                'data' => date('d/m/Y H:i:s',strtotime($obComment->data))
+            $itens .= View::render('admin/modules/comments/item',[
+                'edit'  => "onclick=viewComment({$obComment['id_comentario']})",
+                'click' => "onclick=deleteItem({$obComment['id_comentario']})",
+                'id'       => $obComment['id_comentario'],
+                'user'     => $obComment['nom_usuario'],
+                'mensagem' => $obComment['dsc_comentario'],
+                'data'     => $obComment['dt_comentario']
             ]);
         }
-
         // RETORNA OS DEPOIMENTOS
         return $itens;
     }
 
-
     /**
-     * Methodo responsavel por rendenizar a view de listagem de depoimentos
+     * Método responsável por renderizar a view de listagem de depoimentos
      * @param \App\Http\Request
      * 
      * @return string
      */
     public static function getComments(Request $request): string {
         // CONTEUDO DA HOME
-        $content = View::render('admin/modules/comment/index', [
+        $content = View::render('admin/modules/comments/index', [
             'itens'      => self::getCommentsItems($request, $obPagination),
             'pagination' => parent::getPagination($request, $obPagination),
             'status'     => Alert::getStatus($request)
         ]);
 
         // RETORNA A PAGINA COMPLETA
-        return parent::getPanel('Depoimentos  > WDEV', $content, 'testimonies');
+        return parent::getPanel('Commentários > MDC', $content, 'comments');
     }
 
     /**
-     * Methodo responsavel por retornar o formulario de cadastro de um novo depoimento
-     * @param \App\Http\Request
-     * 
-     * @return string
-     */
-    public static function getNewComment(Request $request): string {
-        // CONTEUDO DO FORMULARIO
-        $content = View::render('admin/modules/comments/form', [
-            'tittle'   => 'Cadastrar depoimento',
-            'nome'     => '',
-            'mensagem' => '',
-            'status'   => ''
-        ]);
-
-        // RETORNA A PAGINA COMPLETA
-        return parent::getPanel('Cadastrar depoimento  > WDEV', $content, 'testimonies');
-    }
-
-    /**
-     * Methodo responsavel por cadastrar um depoimento no banco
-     * @param \App\Http\Request
-     * 
-     * @return void
-     */
-    public static function setNewComment(Request $request): void {
-        // POST VARS
-        $postVars = $request->getPostVars();
-        
-        // NOVA INSTANCIA DE DEPOIMENTO
-        $obComment = new EntityComment;
-        $obComment->nome = $postVars['nome'] ?? '';
-        $obComment->mensagem = $postVars['mensagem'] ?? '';
-        $obComment->insertComment();
-
-        // REDIRECIONA O USUARIO
-        $request->getRouter()->redirect('/admin/testimonies/'.$obComment->id.'/edit?status=created');
-    }
-
-    /**
-     * Methodo responsavel por retornar o formulario edição de um depoimento
-     * @param \App\Http\Request
-     * @param integer $id
-     * 
-     * @return string
-     */
-    public static function getEditComment(Request $request, int $id): string {
-        // OBTENDO O DEPOIMENTO DO BANCO DE DADOS
-        $obComment = EntityComment::getCommentById($id);
-
-        // VALIDA A INSTANCIA
-        if (!$obComment instanceof EntityComment) {
-            $request->getRouter()->redirect('/admin/testimonies');
-        }
-
-        // CONTEUDO DO FORMULARIO
-        $content = View::render('admin/modules/testimonies/form', [
-            'tittle'   => 'Editar depoimento', 
-            'nome'     => $obComment->nome,
-            'mensagem' => $obComment->mensagem,
-            'status'   => Alert::getStatus($request)
-        ]);
-
-        // RETORNA A PAGINA COMPLETA
-        return parent::getPanel('Editar depoimento  > WDEV', $content, 'testimonies');
-    }
-
-    /**
-     * Methodo responsavel por gravar a atualização de um depoimento
-     * @param \App\Http\Request
-     * @param integer $id
-     * 
-     * @return void
-     */
-    public static function setEditComment(Request $request, int $id): void {
-        // OBTENDO O DEPOIMENTO DO BANCO DE DADOS
-        $obComment = EntityComment::getCommentById($id);
-
-        // VALIDA A INSTANCIA
-        if (!$obComment instanceof EntityComment) {
-            $request->getRouter()->redirect('/admin/testimonies');
-        }
-        // POST VARS
-        $postVars = $request->getPostVars();
-
-        // ATUALIZA A INSTANCIA
-        $obComment->nome = $postVars['nome'] ?? $obComment->nome;
-        $obComment->mensagem = $postVars['mensagem'] ?? $obComment->mensagem;
-        $obComment->updateComment();
-
-        // REDIRECIONA O USUARIO
-        $request->getRouter()->redirect('/admin/testimonies/'.$obComment->id.'/edit?status=updated');
-    }
-
-    /**
-     * Methodo responsavel por retornar o formulario exclusão de um depoimento
+     * Método responsável por retornar o formulário de exclusão de um depoimento
      * @param \App\Http\Request
      * @param integer $id
      * 
@@ -175,38 +81,39 @@ class Comment extends Page {
 
         // VALIDA A INSTANCIA
         if (!$obComment instanceof EntityComment) {
-            $request->getRouter()->redirect('/admin/testimonies');
+            $request->getRouter()->redirect('/admin/comments');
         }
-
         // CONTEUDO DO FORMULARIO
-        $content = View::render('admin/modules/testimonies/delete', [
-            'nome'     => $obComment->nome,
-            'mensagem' => $obComment->mensagem,
+        $content = View::render('admin/modules/comments/delete', [
+            'usuario'  => $obComment->getFK_id_usuario(),
+            'mensagem' => $obComment->getDsc_comentario(),
         ]);
 
         // RETORNA A PAGINA COMPLETA
-        return parent::getPanel('Excluir depoimento  > WDEV', $content, 'testimonies');
+        return parent::getPanel('Excluir Comentário > MDC', $content, 'comments');
     }
 
     /**
-     * Methodo responsavel por excluir um depoimento
+     * Método responsável por excluir um depoimento
      * @param \App\Http\Request
      * @param integer $id
      * 
      * @return void
      */
-    public static function setDeleteComment(Request $request, int $id): void {
+    public static function setDeleteComment(Request $request): void {
+        $postVars = $request->getPostVars();
+
         // OBTENDO O DEPOIMENTO DO BANCO DE DADOS
-        $obComment = EntityComment::getCommentById($id);
+        $obComment = EntityComment::getCommentById($postVars['id']);
 
         // VALIDA A INSTANCIA
         if (!$obComment instanceof EntityComment) {
-            $request->getRouter()->redirect('/admin/testimonies');
+            $request->getRouter()->redirect('/admin/comments');
         }
         // EXCLUIR DEPOIMENTO
         $obComment->deleteComment();
 
         // REDIRECIONA O USUARIO
-        $request->getRouter()->redirect('/admin/testimonies?status=deleted');
+        $request->getRouter()->redirect('/admin/comments?status=comment_deleted');
     }
 }

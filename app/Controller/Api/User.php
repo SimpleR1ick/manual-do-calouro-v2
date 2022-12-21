@@ -10,32 +10,32 @@ use Exception;
 class User extends Api {
 
     /**
-     * Método responsavel por retornar os detalhes do usuario
+     * Método responsável por retornar os detalhes do usuário
      * @param \App\Models\Usuario $obUser
      * 
      * @return array
      */
     private static function detailsUser(EntityUser $obUser): array {
-        return [
+        return array(
             'id'    => $obUser->getId_usuario(),
             'nome'  => $obUser->getNom_usuario(),
             'email' => $obUser->getEmail(),
-        ];
+        );
     }
 
     /**
-     * Método responsavel por retornar o usuario atualmente conectado
+     * Método responsável por retornar o usuário atualmente conectado
      * @param Request $request
      * 
      * @return array
      */
     public static function getCurrentUser(Request $request) {
-        // RETORNA OS DETALHES DO USUARIO
+        // RETORNA OS DETALHES DO USUÁRIO
         return self::detailsUser($request->user);
     }
 
     /**
-     * Methodo responsavel por obter a rendenização dos items de usuarios para página
+     * Método responsável por obter a renderização dos items de usuários para página
      * @param \App\Http\Request $request
      * @param \App\Utils\Pagination $obPagination
      * 
@@ -58,16 +58,16 @@ class User extends Api {
         // RESULTADOS DA PAGINA
         $results = EntityUser::getUsers(null, 'id_usuario ASC', $obPagination->getLimit());
 
-        // RENDENIZA O ITEM
+        // RENDERIZA O ITEM
         while ($obUser = $results->fetchObject(EntityUser::class)) {
             $itens[] = self::detailsUser($obUser);
         }
-        // RETORNA OS USUARIOS
+        // RETORNA OS USUÁRIOS
         return $itens;
     }
 
     /**
-     * Methodo responsavel retornar os detalhes da API
+     * Método responsável retornar os detalhes da API
      * @param \App\Http\Request
      * @return array
      */
@@ -79,30 +79,30 @@ class User extends Api {
     }
 
     /**
-     * Methodo responsavel por retornar os detalhes de um usuario
+     * Método responsável por retornar os detalhes de um usuário
      * @param \App\Http\Request
      * @param integer $id
      * 
      * @return array
      */
     public static function getUser(Request $request, int $id) {
-        // VALIDA O ID DO USUARIO
+        // VALIDA O ID DO USUáRIO
         if (!is_numeric($id)) {
-            throw new Exception("O id '".$id."'não e valido", 400);
+            throw new Exception("O id '".$id."'não é valido", 400);
         }
-        // BUSCA USUARIO
+        // BUSCA USUÁRIO
         $obUser = EntityUser::getUserById($id);
 
         // VALIDA SE O DEPOIMENTO EXISTE
         if (!$obUser instanceof EntityUser) {
-            throw new Exception("O usuario ".$id." não foi encontrado", 404);
+            throw new Exception("O usuário ".$id." não foi encontrado", 404);
         }
-        // RETORNA OS DETALHES DO USUARIO
+        // RETORNA OS DETALHES DO USUÁRIO
         return self::detailsUser($obUser);
     }
 
     /**
-     * Metodo responsavel por cadastrar um novo usuario
+     * Método responsável por cadastrar um novo usuário
      * @param \App\Http\Request $request
      * 
      * @return array
@@ -110,18 +110,18 @@ class User extends Api {
     public static function setNewUser(Request $request): array {
         // POST VARS
         $postVars = $request->getPostVars();
-    
+        
         // VALIDA OS CAMPOS OBRIGATORIOS
         if (!isset($postVars['nome']) or !isset($postVars['email']) or !isset($postVars['senha'])) {
             throw new Exception("Os campos 'nome', 'email' e 'senha' são obrigatorios", 400);
         }
-        // VALIDA O EMAIL DO USUARIO
+        // VALIDA O EMAIL DO USUÁRIO
         $obUser = EntityUser::getUserByEmail($postVars[]);
 
         if ($obUser instanceof EntityUser) {
             throw new Exception("O email já está em uso.", 400);
         }
-        // NOVA INSTANCIA DE USUARIO
+        // NOVA INSTANCIA DE USUÁRIO
         $obUser = new EntityUser;
 
         $obUser->setNom_usuario($postVars['nome']);
@@ -130,12 +130,12 @@ class User extends Api {
 
         $obUser->insertUser();
 
-        // RETORNA OS DETALHES DO USUARIO CADASTRADO
+        // RETORNA OS DETALHES DO USUÁRIO CADASTRADO
         return self::detailsUser($obUser);
     }
 
     /**
-     * Methodo responsavel por atualizar um usuario
+     * Método responsável por atualizar um usuário
      * @param \App\Http\Request $request
      * @param integer $id
      * 
@@ -158,7 +158,7 @@ class User extends Api {
 
         // VALIDA A INSTANCIA
         if (!$obUser instanceof EntityUser) {
-            throw new Exception("O usuario ".$id." não foi encontrado", 404);
+            throw new Exception("O usuário ".$id." não foi encontrado", 404);
         }
         // VALIDA DISPONIBILIDADE DO EMAIL
         $obUserEmail = EntityUser::getUserByEmail($email);
@@ -177,7 +177,7 @@ class User extends Api {
     }
 
     /**
-     * Methodo responsavel por excluir um depoimento
+     * Método responsável por excluir um depoimento
      * @param \App\Http\Request $request
      * 
      * @return array

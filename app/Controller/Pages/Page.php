@@ -50,7 +50,7 @@ class Page {
     ];
 
     /**
-     * Método responsável por rendenizar os links do header
+     * Método responsável por renderizar os links do header
      * @param  string $currentModule
      * 
      * @return string
@@ -62,7 +62,7 @@ class Page {
         // VERIFICA SE O USUÁRIO ESTÁ LOGADO
         if (Session::isLogged()) {
             // OBTEM O ID DA SESSÃO ATUAL
-            $turma = EntityUser::getUserClass(Session::getId());
+            $turma = EntityUser::getUserClass(Session::getId()); // CONSULTA
 
             if (!empty($turma)) {
                 // ATRIBUI O LINK À PÁGINA DE HORÁRIO
@@ -77,7 +77,7 @@ class Page {
                 'current' => $hash == $current_module ? 'active' : ''
             ]);
         }
-        // RETORNA A RENDENIZAÇÃO DOS LINKS
+        // RETORNA A RENDERIZAÇÃO DOS LINKS
         return $links;
     }
 
@@ -88,18 +88,16 @@ class Page {
     private static function getLogin(): string {
         // RETORNA O DROPDOWN CASO LOGADO
         if (Session::isLogged()) {
-            // OBTÊM OS DADOS DO USUARIO
+            // OBTÊM OS DADOS DO USUÁRIO
             $obUser = EntityUser::getUserById(Session::getId());
 
-            // VERIFICA SE O USUARIO E ADMINISTRADOR
+            // LAMBDA - RENDERIZA LINK SE USUÁRIO FOR ADMINISTRADOR
             $isAdmin = function($lv) {
-                // COMPARA O NIVEL DE ACESSO
                 if ($lv == 1) {
                     return View::render('pages/header/admin');
                 }
                 return '';
             };
-
             // RETORNA O DROPDOWN DO LOGIN
             return View::render('pages/header/dropdown', [
                 'imagem' => $obUser->getImg_perfil(),
@@ -111,13 +109,13 @@ class Page {
     }
 
     /**
-     * Método responsável por rendenizar a view do painel com conteúdos dinâmicos
+     * Método responsável por renderizar a view do painel com conteúdos dinâmicos
      * @param  string $module
      * 
      * @return string
      */
     private static function getHeader(string $module): string {
-        // RENDENIZA A VIEW DO HEADER
+        // RENDERIZA A VIEW DO HEADER
         return View::render('pages/header', [
             'links' => self::getLinks($module),
             'login' => self::getLogin()
@@ -125,11 +123,11 @@ class Page {
     }
 
     /**
-     * Método responsável por rendenizar o rodapé da pagina
+     * Método responsável por renderizar o rodapé da pagina
      * @return string
      */
     private static function getFooter(): string {
-        // RENDENIZA A VIEW DO FOOTER
+        // RENDERIZA A VIEW DO FOOTER
         return View::render('pages/footer');
     }
 
@@ -138,7 +136,7 @@ class Page {
      * @return string
      */
     protected static function getPage(string $title, string $content, string $module = ''): string {
-        // RENDENIZA A PAGINA
+        // RENDERIZA A PAGINA
         return View::render('pages/page',[
             'title'   => $title,
             'header'  => self::getHeader($module),
@@ -146,16 +144,38 @@ class Page {
             'footer'  => self::getFooter()
         ]);
     }
+
+    /**
+     * Método responsavel por renderizar os input hidden
+     * @param array $array
+     * 
+     * @return string
+     */
+    protected static function setHiddens(array $array): string {
+        // INICIALIZAÇÃO DE VARIAVEL
+        $content = '';
+
+        for ($i = 0; $i < count($array); $i++) {
+            $keys = array_keys($array);
+
+            $content .= View::render('/shared/hidden', [
+                'id'    => 'h-'.$keys[$i],
+                'value' => $array[$keys[$i]]
+            ]);
+        }
+        // RETORNA O CONTEUDO
+        return $content;
+    }
     
     /**
-     * Método responsável por rendenizar o layout de paginação
+     * Método responsável por renderizar o layout de paginação
      * @param \App\Http\Request     $request
      * @param \App\Utils\Pagination $obPagination
      * 
      * @return string
      */
     protected static function getPagination(Request $request, Pagination $obPagination): string {
-        // DECLARAÇÃO DE VARIAVEIS
+        // DECLARAÇÃO DE VARIÁVEIS
         $links = '';
         $pages = $obPagination->getPages(); // OBTER AS PAGINAS
         $url = $request->getRouter()->getCurrentUrl(); // URL ATUAL sem GET
@@ -185,7 +205,7 @@ class Page {
         if ($start > 0) {
             $links .= self::getPaginationLink($queryParams, reset($pages), $url, '<<'); 
         }
-        // RENDENIZA OS LINKS
+        // RENDERIZA OS LINKS
         foreach ($pages as $page) {
             // VERIFICA O STRAT DA PAGINAÇÃO
             if ($page['page'] <= $start) continue;

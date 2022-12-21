@@ -93,6 +93,38 @@ class Database {
 	}
 
 	/**
+	 * Get conexão atual
+	 * @return PDO
+	 */
+	public function getConnection(): PDO {
+		return $this->connection;
+	}
+
+	/**
+	 * Desativa o auto-commit da instancia
+	 * @return void
+	 */
+	public function beginTransaction(): void {
+		$this->connection->beginTransaction();
+	}
+
+	/**
+	 * Salva as alterações na instancia
+	 * @return void
+	 */
+	public function commit(): void {
+		$this->connection->commit();
+	}
+
+	/**
+	 * Revverte as alterações na instancia
+	 * @return void
+	 */
+	public function rollBack(): void {
+		$this->connection->rollBack();
+	}
+
+	/**
 	 * Método responsável por executar queries dentro do banco de dados
 	 * @param  string $query
 	 * @param  array  $params
@@ -116,10 +148,11 @@ class Database {
 	/**
 	 * Método responsável por inserir dados no banco
 	 * @param  array $values [ field => value ]
+	 * @param  boolean $returnId
 	 * 
-	 * @return integer ID inserido
+	 * @return integer|void ID inserido
 	 */
-	public function insert(array $values): int {
+	public function insert(array $values, bool $returnId = true): mixed {
 		// DADOS DA QUERY
 		$fields = array_keys($values);
 		$binds  = array_pad([], count($fields), '?');
@@ -130,9 +163,26 @@ class Database {
 		// EXECUTA O INSERT
 		$this->execute($query, array_values($values));
 
+		// NÃO RETORNA O ID
+		if ($returnId === false) {
+			return null;
+		}
 		// RETORNA O ID INSERIDO
 		return $this->connection->lastInsertId();
 	}
+
+	/**
+     * Método responsavel por consultar toda a tabela
+     * @param string $table
+	 * @param string $fields
+	 * 
+	 * @return array
+     */
+    public function find(string $table, string $fields = '*'): array {
+		$stmt = $this->execute("SELECT $fields FROM $table");
+
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
 	/**
 	 * Método responsável por executar uma consulta no banco
@@ -192,17 +242,5 @@ class Database {
 
 		// RETORNA SUCESSO
 		return true;
-	}
-
-	/*
-     * Metodos GETTERS E SETTERS
-     */
-
-	/**
-	 * Get conexão atual
-	 * @return PDO
-	 */
-	public function getConnection(): PDO {
-		return $this->connection;
 	}
 }
