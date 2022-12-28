@@ -3,9 +3,9 @@
 namespace App\Http;
 
 use App\Http\Middleware\Queue as MiddlewareQueue;
-use \Closure;
-use \Exception;
 use \ReflectionFunction;
+use \Exception;
+use \Closure;
 
 class Router {
 
@@ -29,7 +29,7 @@ class Router {
 
     /**
      * Instância de Request
-     * @var Request
+     * @var \App\Http\Request
      */
     private $request;
 

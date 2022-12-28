@@ -1,19 +1,19 @@
 <?php
 
-// INCLUI AS ROTAS DE DEPOIMENTOS
+// ROTAS DO PAINEL DE COMENTARIOS
 include_once __DIR__.'/admin/comments.php';
 
-// INCLUI AS ROTAS DE EVENTOS
+// ROTAS CRUD DE EVENTOS
 include_once __DIR__.'/admin/events.php';
 
-// INCLUI AS ROTAS DE HOME
+// ROTAS HOME DA AREA ADMIN
 include_once __DIR__.'/admin/home.php';
 
-// INCLUI AS ROTAS DE LOGIN
+// ROTAS LOGIN DA AREA ADMIN
 include_once __DIR__.'/admin/login.php';
 
-// INCLUI AS ROTAS DE USUARIOS
+// ROTAS CRUD DE AULAS
 include_once __DIR__.'/admin/schedules.php';
 
-// INCLUI AS ROTAS DE USUARIOS
+// ROTAS CRUD DE USUARIOS
 include_once __DIR__.'/admin/users.php';

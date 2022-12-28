@@ -6,7 +6,7 @@ class Request {
 
     /**
      * Instância do Router
-     * @var Router 
+     * @var \App\Http\Router 
      */
     private $router;
 
@@ -55,7 +55,7 @@ class Request {
     /**
      * Construtor da classe
      */
-    public function __construct($router) {
+    public function __construct(Router $router) {
         $this->router      = $router;
         $this->httpMethod  = $_SERVER['REQUEST_METHOD'] ?? '';
         $this->queryParams = $_GET ?? [];
@@ -149,6 +149,7 @@ class Request {
 
         // REMOVE GETS DA URI
         $xUri = explode('?', $this->uri);
+        
         $this->uri = $xUri[0];
     }
 
