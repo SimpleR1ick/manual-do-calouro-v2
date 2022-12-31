@@ -8,7 +8,7 @@ class Professor {
 
     /**
      * ID do professor
-     * @var integer
+     * @var int
      */
     private $fk_servidor_fk_usuario_id_usuario;
 
@@ -59,7 +59,7 @@ class Professor {
 
     /**
      * Método responsável por retornar uma istância com base no ID
-     * @param  integer $id
+     * @param  int $id
      * 
      * @return self|bool
      */
@@ -73,7 +73,7 @@ class Professor {
 
     /**
      * Get fk_servidor_fk_usuario_id_usuario
-     * @return integer
+     * @return int
      */
     public function getFk_id_usuario(): int {
         return $this->fk_servidor_fk_usuario_id_usuario;
@@ -81,7 +81,7 @@ class Professor {
 
     /**
      * Set fk_servidor_fk_usuario_id_usuario
-     * @param integer $fk
+     * @param int $fk
      */
     public function setFk_id_usuario(int $fk): void {
         $this->fk_servidor_fk_usuario_id_usuario = $fk;

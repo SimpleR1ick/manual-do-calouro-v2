@@ -6,33 +6,33 @@ class Pagination {
 
 	/**
 	 * Número máximo de registros por página
-	 * @var integer
+	 * @var int
 	 */
 	private $limit;
 
 	/**
 	 * Quantidade total de resultados do banco
-	 * @var integer
+	 * @var int
 	 */
 	private $results;
 
 	/**
 	 * Quantidade de páginas
-	 * @var integer
+	 * @var int
 	 */
 	private $pages;
 
 	/**
 	 * Página atual
-	 * @var integer
+	 * @var int
 	 */
 	private $currentPage;
 
 	/**
 	 * Construtor da classe
-	 * @param integer  $results
-	 * @param integer  $currentPage
-	 * @param integer  $limit
+	 * @param int  $results
+	 * @param int  $currentPage
+	 * @param int  $limit
 	 */
 	public function __construct(int $results, int $currentPage = 1, int $limit = 10) {
 		$this->results     = $results;

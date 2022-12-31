@@ -48,7 +48,7 @@ class Session {
 
     /**
      * Método responsável por devolver o ID do usuário logado
-     * @return integer
+     * @return int
      */
     public static function getId(): int {
         // INICIA A SESSÃO
@@ -60,7 +60,7 @@ class Session {
 
     /**
      * Método responsavel por devolve o LV de acesso do usuario
-     * @return integer
+     * @return int
      */
     public static function getLv(): int {
         // INICIA A SESSÃO

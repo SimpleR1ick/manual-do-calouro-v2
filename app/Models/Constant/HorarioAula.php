@@ -7,7 +7,7 @@ class HorarioAula {
 
     /**
      * ID SERIAL do horario
-     * @var integer
+     * @var int
      */
     private $id_horario_aula;
 

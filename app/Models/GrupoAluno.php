@@ -8,13 +8,13 @@ class GrupoAluno {
 
     /**
      * FK da tabela usuario
-     * @var integer
+     * @var int
      */
     private $fk_aluno_fk_usuario_id_usuario;
 
     /**
      * FK da tabela grupo
-     * @var integer
+     * @var int
      */
     private $fk_grupo_id_grupo = 0;
 
@@ -43,8 +43,8 @@ class GrupoAluno {
 
     /**
      * Método responsavel por definir a fk_grupo do objeto
-     * @param integer $curso
-     * @param integer $modulo
+     * @param int $curso
+     * @param int $modulo
      * 
      * @return void
      */
@@ -66,7 +66,7 @@ class GrupoAluno {
 
     /**
      * Get fk_aluno_fk_usuario_id_usuario
-     * @return integer
+     * @return int
      */
     public function getFk_id_usuario(): int {
         return $this->fk_aluno_fk_usuario_id_usuario;
@@ -74,7 +74,7 @@ class GrupoAluno {
 
     /**
      * Set fk_aluno_fk_usuario_id_usuario
-     * @param integer $fk
+     * @param int $fk
      */
     public function setFk_id_usuario(int $fk): void {
         $this->fk_aluno_fk_usuario_id_usuario = $fk;
@@ -82,7 +82,7 @@ class GrupoAluno {
 
     /**
      * Get fk_grupo_id_grupo
-     * @return integer
+     * @return int
      */
     public function getFk_id_grupo(): int {
         return $this->fk_grupo_id_grupo;
@@ -90,7 +90,7 @@ class GrupoAluno {
 
     /**
      * Set fk_grupo_id_grupo
-     * @param integer $value
+     * @param int $value
      */
     public function setFk_id_grupo(string $value): void {
         $this->fk_grupo_id_grupo = $value;

@@ -117,7 +117,7 @@ class Event extends Page {
     /**
      * Método responsavel por retornar o formulario de edição de um evento
      * @param \App\Http\Request $request
-     * @param integer $id
+     * @param int $id
      * 
      * @return string
      */
@@ -145,7 +145,7 @@ class Event extends Page {
     /**
      * Método responsavel por atualizar um evento
      * @param \App\Http\Request $request
-     * @param integer $id
+     * @param int $id
      * 
      * @return void
      */

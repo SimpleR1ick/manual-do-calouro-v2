@@ -134,7 +134,7 @@ class User extends Page {
     /**
      * Método responsável por retornar o formulário de edição de um usuário
      * @param \App\Http\Request
-     * @param integer $id
+     * @param int $id
      * 
      * @return string
      */
@@ -173,7 +173,7 @@ class User extends Page {
     /**
      * Método responsável por gravar a atualização de um usuário
      * @param \App\Http\Request
-     * @param integer $id
+     * @param int $id
      * 
      * @return void
      */

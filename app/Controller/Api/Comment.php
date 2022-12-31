@@ -11,7 +11,7 @@ class Comment {
     /**
      * Método responsavel por retornar os dados de um comentario
      * @param \App\Http\Request $request
-     * @param integer $id
+     * @param int $id
      * 
      * @return array
      */

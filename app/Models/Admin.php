@@ -8,13 +8,13 @@ class Admin {
 
     /**
      * ID do administrativo
-     * @var integer
+     * @var int
      */
     private $fk_servidor_fk_usuario_id_usuario;
 
     /**
      * Setor do administrativo
-     * @var integer
+     * @var int
      */
     private $fk_setor_id_setor;
 
@@ -49,7 +49,7 @@ class Admin {
 
     /**
      * Get fk_servidor_fk_usuario_id_usuario
-     * @return integer
+     * @return int
      */
     public function getFk_id_usuario(): int {
         return $this->fk_servidor_fk_usuario_id_usuario;
@@ -57,7 +57,7 @@ class Admin {
 
     /**
      * Set fk_servidor_fk_usuario_id_usuario
-     * @param integer $fk
+     * @param int $fk
      */
     public function setFk_id_usuario(int $fk): void {
         $this->fk_servidor_fk_usuario_id_usuario = $fk;
@@ -65,7 +65,7 @@ class Admin {
     
     /**
      * Get fk_setor_id_setor
-     * @return integer
+     * @return int
      */
     public function getFk_id_setor(): int {
         return $this->fk_setor_id_setor;
@@ -73,7 +73,7 @@ class Admin {
 
     /**
      * Set fk_setor_id_setor
-     * @param integer $setor
+     * @param int $setor
      */
     public function setFk_id_setor(int $setor): void {
         $this->fk_setor_id_setor = $setor;

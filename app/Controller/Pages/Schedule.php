@@ -122,8 +122,8 @@ class Schedule extends Page {
 
     /**
      * Método responsável por retornar a view da tabela do horário
-     * @param integer $curso 
-     * @param integer $modulo
+     * @param int $curso 
+     * @param int $modulo
      * 
      * @return string
      */
@@ -153,7 +153,7 @@ class Schedule extends Page {
     /**
      * Método responsável por definir o array de aula com turma dividida
      * @param array $aulas 
-     * @param integer $count
+     * @param int $count
      * 
      * @return array
      */
@@ -191,7 +191,7 @@ class Schedule extends Page {
     /**
      * Método responsável por retornar a view de uma linha
      * @param  array   $aulas
-     * @param  integer $count
+     * @param  int $count
      * 
      * @return string
      */

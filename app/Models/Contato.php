@@ -8,19 +8,19 @@ class Contato {
 
     /**
      * ID do contato
-     * @var integer
+     * @var int
      */
     private $id_contato;
 
     /**
      * ID do servidor
-     * @var integer
+     * @var int
      */
     private $fk_servidor_fk_usuario_id_usuario;
 
     /**
      * ID do tipo do contato
-     * @var integer
+     * @var int
      */
     private $fk_tipo_contato_id_tipo;
 
@@ -139,7 +139,7 @@ class Contato {
 
     /**
      * Método responsável por consultar as informações de um contato, pelo ID do usuário
-     * @param integer $id
+     * @param int $id
      * 
      * @return \PDOStatement|bool
      */
@@ -177,7 +177,7 @@ class Contato {
 
     /**
      * Método responsável por retornar os contatos de um usuário
-     * @param integer $id
+     * @param int $id
      * 
      * @return self|bool
      */
@@ -187,7 +187,7 @@ class Contato {
 
     /**
      * Método responsável por retornar os contatos de um usuário
-     * @param integer $fk
+     * @param int $fk
      * 
      * @return array|bool
      */
@@ -201,7 +201,7 @@ class Contato {
 
     /**
      * Get id_usuario
-     * @return integer
+     * @return int
      */
      public function getId_contato(): int {
         return $this->id_contato;
@@ -209,7 +209,7 @@ class Contato {
      
      /**
       * Set id_usuario
-      * @param integer $id
+      * @param int $id
       */
      public function setId_contato(int $id): void {
         $this->id_contato = $id;
@@ -217,7 +217,7 @@ class Contato {
 
     /**
      * Get fk_servidor_fk_id_usuario
-     * @return integer
+     * @return int
      */
      public function getFk_usuario(): int {
         return $this->fk_servidor_fk_usuario_id_usuario;
@@ -225,7 +225,7 @@ class Contato {
 
      /**
       * Set fk_servidor_fk_id_usuario
-      * @param integer $id
+      * @param int $id
       */
      public function setFk_usuario(int $id): void {
         $this->fk_servidor_fk_usuario_id_usuario = $id;
@@ -233,7 +233,7 @@ class Contato {
 
     /**
      * Get fk_tipo_contato_id_tipo
-     * @return integer
+     * @return int
      */
     public function getFk_tipo(): int {
         return $this->fk_tipo_contato_id_tipo;
@@ -241,7 +241,7 @@ class Contato {
 
      /**
       * Set fk_tipo_contato_id_tipo
-      * @param integer $id
+      * @param int $id
       */
      public function setFk_tipo(int $id): void {
         $this->fk_tipo_contato_id_tipo = $id;

@@ -8,7 +8,7 @@ class Chave {
 
     /**
      * ID do usuário da chave
-     * @var integer
+     * @var int
      */
     private $fk_usuario_id_usuario;
 
@@ -67,7 +67,7 @@ class Chave {
 
     /**
      * Get fk_usuario_id_usuario
-     * @return integer
+     * @return int
      */
     public function getFkId(): int {
         return $this->fk_usuario_id_usuario;
@@ -75,7 +75,7 @@ class Chave {
 
     /**
      * Set fk_usuario_id_usuario
-     * @param integer $id
+     * @param int $id
      */
     public function setFkId($id): void {
         $this->fk_usuario_id_usuario = $id;

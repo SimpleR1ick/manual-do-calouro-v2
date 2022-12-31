@@ -8,7 +8,7 @@ class Evento {
 
     /**
      * ID serial do evento
-     * @var integer
+     * @var int
      */
     private $id_evento;
 
@@ -26,7 +26,7 @@ class Evento {
 
     /**
      * FK do campus relacionado
-     * @var integer
+     * @var int
      */
     private $fk_campus_id_campus;
 
@@ -80,7 +80,7 @@ class Evento {
 
     /**
      * Método responsavel por obter um evento pelo ID
-     * @param integer $id
+     * @param int $id
      * 
      * @return self|bool
      */
@@ -113,7 +113,7 @@ class Evento {
     
     /**
      * Get id_evento
-     * @return integer
+     * @return int
      */ 
     public function getId_evento(): int {
         return $this->id_evento;
@@ -121,7 +121,7 @@ class Evento {
 
     /**
      * Set id_evento
-     * @param integer $id
+     * @param int $id
      */
     public function setId_evento(int $id): void {
         $this->id_evento = $id;
@@ -161,7 +161,7 @@ class Evento {
 
     /**
      * Get fk_campus_id_campus
-     * @return integer
+     * @return int
      */
     public function getFk_campus(): int {
         return $this->fk_campus_id_campus;
@@ -169,7 +169,7 @@ class Evento {
 
     /**
      * Set fk_campus_id_campus
-     * @param integer
+     * @param int
      */
     public function setFk_campus(int $fk): void {
         $this->fk_campus_id_campus = $fk;

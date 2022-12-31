@@ -29,8 +29,8 @@ class Turma {
 
     /**
      * Método responsável por retornar os grupos dependendo da turma do usuário
-     * @param integer $curso
-     * @param integer $modulo
+     * @param int $curso
+     * @param int $modulo
      * 
      * @return array
      */

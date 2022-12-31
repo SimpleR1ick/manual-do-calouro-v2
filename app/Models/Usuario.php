@@ -8,7 +8,7 @@ class Usuario {
 
     /**
      * ID do usuário
-     * @var integer
+     * @var int
      */
     private $id_usuario;
 
@@ -44,7 +44,7 @@ class Usuario {
 
     /**
      * Nivel de acesso do usuário
-     * @var integer
+     * @var int
      */
     private $fk_acesso_id_acesso = 2;
 
@@ -115,7 +115,7 @@ class Usuario {
 
     /**
      * Método responsável por retornar o grupo pelo id do usuário
-     * @param integer $id
+     * @param int $id
      * 
      * @return mixed
      */
@@ -130,7 +130,7 @@ class Usuario {
 
     /**
      * Método responsável por retornar o id do grupo pelo id
-     * @param integer $id
+     * @param int $id
      * 
      * @return mixed
      */
@@ -177,7 +177,7 @@ class Usuario {
 
     /**
      * Método responsável por retornar uma istância com base no ID
-     * @param  integer $id
+     * @param  int $id
      * 
      * @return self|bool
      */
@@ -201,7 +201,7 @@ class Usuario {
     
      /**
       * Get id_usuario
-      * @return integer
+      * @return int
       */
     public function getId_usuario(): int {
         return $this->id_usuario;
@@ -209,7 +209,7 @@ class Usuario {
 
     /**
      * Set id_usuario
-     * @param integer $id
+     * @param int $id
      */
     private function setId_usuario(int $id): void {
         $this->id_usuario = $id;
@@ -281,7 +281,7 @@ class Usuario {
 
     /**
      * Get ativo
-     * @return integer
+     * @return int
      */
     public function getAtivo(): int { 
         return $this->fk_nivel_id_nivel;
@@ -289,7 +289,7 @@ class Usuario {
 
     /**
      * Set ativo
-     * @param integer $ativo
+     * @param int $ativo
      */
     public function setAtivo(int $ativo): void {
         $this->fk_nivel_id_nivel = $ativo;
@@ -314,7 +314,7 @@ class Usuario {
     
     /**
      * Get fk_acesso_id_acesso
-     * @return integer
+     * @return int
      */
     public function getFk_acesso(): int { 
         return $this->fk_acesso_id_acesso;
@@ -322,7 +322,7 @@ class Usuario {
 
     /**
      * Set fk_acesso_id_acesso
-     * @param integer $acesso
+     * @param int $acesso
      */
     public function setFk_acesso(int $acesso = 2): void { 
         $this->fk_acesso_id_acesso = $acesso;
@@ -330,7 +330,7 @@ class Usuario {
     
     /**
      * Get fk_nivel_id_nivel
-     * @return integer
+     * @return int
      */
     public function getFk_nivel(): int {
         return $this->fk_nivel_id_nivel;
@@ -338,7 +338,7 @@ class Usuario {
     
     /**
      * Set fk_nivel_id_nivel
-     * @param integer $nivel
+     * @param int $nivel
      */
     public function setFk_nivel(int $nivel): void {
         $this->fk_nivel_id_nivel = $nivel;

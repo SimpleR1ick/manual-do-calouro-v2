@@ -8,7 +8,7 @@ class Curso {
 
     /**
      * SERIAL ID do curso
-     * @var integer
+     * @var int
      */
     private $id_curso;
 
@@ -20,7 +20,7 @@ class Curso {
 
     /**
      * Método responsável por obter o curso de um usuário
-     * @param integer $id
+     * @param int $id
      * 
      * @return array
      */

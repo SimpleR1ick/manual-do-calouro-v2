@@ -34,7 +34,7 @@ class Database {
 
 	/**
 	 * Porta de acesso ao banco
-	 * @var integer
+	 * @var int
 	 */
 	private static $port;
 
@@ -65,7 +65,7 @@ class Database {
 	 * @param  string  $name
 	 * @param  string  $user
 	 * @param  string  $pass
-	 * @param  integer $port
+	 * @param  int $port
 	 * 
 	 * @return void
 	 */
@@ -150,7 +150,7 @@ class Database {
 	 * @param  array $values [ field => value ]
 	 * @param  boolean $returnId
 	 * 
-	 * @return integer|void ID inserido
+	 * @return int|void ID inserido
 	 */
 	public function insert(array $values, bool $returnId = true): mixed {
 		// DADOS DA QUERY

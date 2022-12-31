@@ -41,7 +41,7 @@ class File {
     /**
      * Methodo responsavel por retornar o conteudo gravado no cache
      * @param string  $hash
-     * @param integer $expiration
+     * @param int $expiration
      * @return mixed
      */
     private static function getContentCache($hash, $expiration) {
@@ -67,7 +67,7 @@ class File {
     /**
      * Methodo responsavel por obter uma informação do cache
      * @param string $hash
-     * @param integer $expiration
+     * @param int $expiration
      * @param \Closure $function
      * @return mixed
      */

@@ -113,7 +113,7 @@ class Schedule extends Page {
     /**
      * Método responsavel por renderizar o formulario de edição de aula
      * @param \App\Http\Request $request
-     * @param integer $id
+     * @param int $id
      * 
      * @return string
      */
@@ -139,7 +139,7 @@ class Schedule extends Page {
     /**
      * Método responsavel por processaro formulario de edicão de aula
      * @param \App\Http\Request $request
-     * @param integer $id
+     * @param int $id
      * 
      * @return void
      */

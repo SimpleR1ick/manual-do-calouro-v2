@@ -8,13 +8,13 @@ class Servidor {
 
     /**
      * ID do servidor
-     * @var integer
+     * @var int
      */
     private $fk_usuario_id_usuario;
 
     /**
      * Sala do servidor
-     * @var integer
+     * @var int
      */
     private $fk_sala_id_sala;
 
@@ -52,7 +52,7 @@ class Servidor {
 
     /**
      * Get fk_usuario_id_usuario
-     * @return integer
+     * @return int
      */
     public function getFk_id_usuario(): int {
         return $this->fk_usuario_id_usuario;
@@ -60,7 +60,7 @@ class Servidor {
 
     /**
      * Set fk_usuario_id_usuario
-     * @param integer $fk
+     * @param int $fk
      */
     public function setFk_id_usuario(int $fk): void {
         $this->fk_usuario_id_usuario = $fk;
@@ -68,7 +68,7 @@ class Servidor {
     
     /**
      * Get fk_sala_id_sala
-     * @return integer
+     * @return int
      */
     public function getFk_id_sala(): int {
         return $this->fk_sala_id_sala;
@@ -76,7 +76,7 @@ class Servidor {
 
     /**
      * Set fk_sala_id_sala
-     * @param integer $room
+     * @param int $room
      */
     public function setFk_id_sala(int $room): void {
         $this->fk_sala_id_sala = $room;

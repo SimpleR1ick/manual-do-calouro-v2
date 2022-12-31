@@ -30,19 +30,19 @@ class Upload {
 
     /**
      * Tamanho do arquivo
-     * @var integer
+     * @var int
      */
     private $size;
 
     /**
      * Codigo de erro do upload
-     * @var integer
+     * @var int
      */
     private $error;
 
     /**
      * Contador de duplicação de arquivo
-     * @var integer
+     * @var int
      */
     private $duplicates = 0;
 
@@ -237,7 +237,7 @@ class Upload {
 
     /**
      * Get size
-     * @return integer
+     * @return int
      */
     public function getsize(): int {
         return $this->size;
@@ -245,7 +245,7 @@ class Upload {
 
     /**
      * Get error
-     * @return integer
+     * @return int
      */
     public function getUploadError(): int {
         return $this->error;

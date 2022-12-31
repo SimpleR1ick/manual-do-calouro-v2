@@ -71,7 +71,7 @@ class Comment extends Page {
     /**
      * Método responsável por retornar o formulário de exclusão de um depoimento
      * @param \App\Http\Request
-     * @param integer $id
+     * @param int $id
      * 
      * @return string
      */
@@ -96,7 +96,7 @@ class Comment extends Page {
     /**
      * Método responsável por excluir um depoimento
      * @param \App\Http\Request
-     * @param integer $id
+     * @param int $id
      * 
      * @return void
      */

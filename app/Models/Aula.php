@@ -8,37 +8,37 @@ class Aula {
 
     /**
      * ID da aula
-     * @var integer
+     * @var int
      */
     private $id_aula;
 
     /**
      * Fk do dia da semana
-     * @var integer
+     * @var int
      */
     private $fk_dia_semana_id_dia_semana;
 
     /**
      * Fk do horario da aula
-     * @var integer
+     * @var int
      */
     private $fk_horario_aula_id_horario_aula;
 
     /**
      * Fk da sala de aula
-     * @var integer
+     * @var int
      */
     private $fk_sala_aula_id_sala_aula;
 
     /**
      * Fk disciplina
-     * @var integer
+     * @var int
      */
     private $fk_disciplina_id_disciplina;
 
     /**
      * Fk do professor
-     * @var integer
+     * @var int
      */
     private $fk_professor_fk_servidor_fk_usuario_id_usuario;
 
@@ -92,8 +92,8 @@ class Aula {
 
     /**
      * Método responsável por retornar todos os horários de uma turma
-     * @param integer $curso
-     * @param integer $modulo
+     * @param int $curso
+     * @param int $modulo
      * 
      * @return array
      */
@@ -192,7 +192,7 @@ class Aula {
     /**
      * Método responsável por consultar todas as aulas com a descrição dos items
      * @param string  $order 
-     * @param integer $limit 
+     * @param int $limit 
      * 
      * @return \PDOStatement
      */
@@ -252,7 +252,7 @@ class Aula {
 
     /**
      * Get id_aula
-     * @return integer
+     * @return int
      */
     public function getId_aula(): int {
         return $this->id_aula;
@@ -260,7 +260,7 @@ class Aula {
 
     /**
      * Set id_aula
-     * @param integer $id
+     * @param int $id
      */
     private function setId_aula(int $id): void {
         $this->id_aula = $id;
@@ -268,7 +268,7 @@ class Aula {
 
     /**
      * Get fk_dia_semana_id_dia_semana
-     * @return integer
+     * @return int
      */
     public function getFk_dia_semana(): int {
         return $this->fk_dia_semana_id_dia_semana;
@@ -276,7 +276,7 @@ class Aula {
 
     /**
      * Set fk_dia_semana_id_dia_semana
-     * @param integer $fk
+     * @param int $fk
      */
     public function setFk_dia_semana(int $fk): void {
         $this->fk_dia_semana_id_dia_semana = $fk;
@@ -284,7 +284,7 @@ class Aula {
 
     /**
      * Get fk_horario_aula_id_horario_aula
-     * @return integer
+     * @return int
      */
     public function getFk_horario_aula(): int {
         return $this->fk_horario_aula_id_horario_aula;
@@ -292,7 +292,7 @@ class Aula {
 
     /**
      * Set fk_horario_aula_id_horario_aula
-     * @param integer $fk
+     * @param int $fk
      */
     public function setFk_horario_aula(int $fk): void {
         $this->fk_horario_aula_id_horario_aula = $fk;
@@ -300,7 +300,7 @@ class Aula {
 
     /**
      * Get fk_sala_aula_id_sala_aula
-     * @return integer
+     * @return int
      */
     public function getFk_sala_aula(): int {
         return $this->fk_sala_aula_id_sala_aula;
@@ -308,7 +308,7 @@ class Aula {
 
     /**
      * Set fk_sala_aula_id_sala_aula
-     * @param integer $fk
+     * @param int $fk
      */
     public function setFk_sala_aula(int $fk): void {
         $this->fk_sala_aula_id_sala_aula = $fk;
@@ -316,7 +316,7 @@ class Aula {
     
     /**
      * Get fk_disciplina_id_disciplina
-     * @return integer
+     * @return int
      */
     public function getFk_disciplina(): int {
         return $this->fk_disciplina_id_disciplina;
@@ -324,7 +324,7 @@ class Aula {
 
     /**
      * Set fk_disciplina_id_disciplina
-     * @param integer $fk
+     * @param int $fk
      */
     public function setFk_disciplina(int $fk): void {
         $this->fk_disciplina_id_disciplina = $fk;
@@ -332,7 +332,7 @@ class Aula {
 
     /**
      * Get fk_professor_fk_servidor_fk_usuario_id_usuario
-     * @return integer
+     * @return int
      */
     public function getFk_professor(): int {
         return $this->fk_professor_fk_servidor_fk_usuario_id_usuario;
@@ -340,7 +340,7 @@ class Aula {
 
     /**
      * Set fk_professor_fk_servidor_fk_usuario_id_usuario
-     * @param integer $fk
+     * @param int $fk
      */
     public function setFk_professor(int $fk): void {
         $this->fk_professor_fk_servidor_fk_usuario_id_usuario = $fk;
@@ -356,7 +356,7 @@ class Aula {
 
     /**
      * Set fk_grupo_id_grupo
-     * @param integer $fk
+     * @param int $fk
      */
     public function setFk_grupo(int $fk): void {
         $this->fk_grupo_id_grupo = $fk;

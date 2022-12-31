@@ -8,7 +8,7 @@ class Aluno {
 
     /**
      * ID do aluno
-     * @var integer
+     * @var int
      */
     private $fk_usuario_id_usuario;
 
@@ -54,7 +54,7 @@ class Aluno {
 
     /**
      * Get fk_usuario_id_usuario
-     * @return integer
+     * @return int
      */
     public function getFk_id_usuario(): int {
         return $this->fk_usuario_id_usuario;
@@ -62,7 +62,7 @@ class Aluno {
 
     /**
      * Set fk_usuario_id_usuario
-     * @param integer $fk
+     * @param int $fk
      */
     public function setFk_id_usuario(int $fk): void {
         $this->fk_usuario_id_usuario = $fk;

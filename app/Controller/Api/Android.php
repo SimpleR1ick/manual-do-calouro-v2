@@ -15,7 +15,7 @@ Class Android {
 
     /**
      * Método responsável por retorna o código & mensagem da API
-     * @param integer $code
+     * @param int $code
      * @param string  $message
      * @param array   $dados
      * 

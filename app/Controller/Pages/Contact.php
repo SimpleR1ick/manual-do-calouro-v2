@@ -76,7 +76,7 @@ class Contact extends Page {
 
     /**
      * Método responsável por renderizar o CRUD de contatos
-     * @param integer $acess
+     * @param int $acess
      * 
      * @return string
      */
@@ -123,7 +123,7 @@ class Contact extends Page {
 
     /**
      * Método responsável por renderizar o contato
-     * @param  integer $id
+     * @param  int $id
      * 
      * @return string
      */ 

@@ -81,7 +81,7 @@ class User extends Api {
     /**
      * Método responsável por retornar os detalhes de um usuário
      * @param \App\Http\Request
-     * @param integer $id
+     * @param int $id
      * 
      * @return array
      */
@@ -137,7 +137,7 @@ class User extends Api {
     /**
      * Método responsável por atualizar um usuário
      * @param \App\Http\Request $request
-     * @param integer $id
+     * @param int $id
      * 
      * @return array
      */

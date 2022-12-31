@@ -6,7 +6,7 @@ class Response {
 
     /**
      * Código status HTTP
-     * @var integer
+     * @var int
      */
     private $httpCode = 200;
 
@@ -30,7 +30,7 @@ class Response {
 
     /**
      * Método construtor da classe
-     * @param integer $httpCode
+     * @param int $httpCode
      * @param mixed   $content
      * @param string  $contentType 
      */

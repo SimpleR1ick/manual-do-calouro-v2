@@ -8,7 +8,7 @@ class Comentario {
 
     /**
      * ID do depoimento
-     * @var integer
+     * @var int
      */
     private $id_comentario;
 
@@ -26,7 +26,7 @@ class Comentario {
 
     /**
      * FK do usuario que fez o comentário
-     * @var integer
+     * @var int
      */
     private $fk_usuario_id_usuario;
 
@@ -85,7 +85,7 @@ class Comentario {
 
     /**
      * Método responsável por retornar um depoimento com base no seu id
-     * @param  integer $id
+     * @param  int $id
      * 
      * @return self|bool
      */
