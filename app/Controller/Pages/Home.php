@@ -12,28 +12,6 @@ use App\Utils\Pagination;
 class Home extends Page {
 
     /**
-     * Método responsável por retornar o contéudo (view) da página home
-     * @return string
-     */
-    public static function getHome($request) {
-        
-        $form = '<p>Faça login para comentar</p>';
-
-        if (Session::isLogged()) {
-            $form = View::render('pages/components/home/form');
-        }
-
-        // VIEW DA HOME
-        $content = View::render('pages/home', [
-            'formulario'  => $form,
-            'comentarios' => self::getCommentsItems($request, $obPagination),
-            'pagination'  => parent::getPagination($request, $obPagination)
-        ]);
-        // RETORNA A VIEW DA PAGINA
-        return parent::getPage('Home', $content, 'home');
-    }
-
-    /**
      * Método responsável por obter a renderização dos items de depoimentos para página
      * @param \App\Http\Request $request
      * @param \App\Utils\Pagination $obPagination
@@ -74,6 +52,28 @@ class Home extends Page {
         }
         // RETORNA OS DEPOIMENTOS
         return $itens;
+    }
+
+    /**
+     * Método responsável por retornar o contéudo (view) da página home
+     * @return string
+     */
+    public static function getHome($request) {
+        
+        $form = '<p>Faça login para comentar</p>';
+
+        if (Session::isLogged()) {
+            $form = View::render('pages/components/home/form');
+        }
+
+        // VIEW DA HOME
+        $content = View::render('pages/home', [
+            'formulario'  => $form,
+            'comentarios' => self::getCommentsItems($request, $obPagination),
+            'pagination'  => parent::getPagination($request, $obPagination)
+        ]);
+        // RETORNA A VIEW DA PAGINA
+        return parent::getPage('Home', $content, 'home');
     }
 
     /**
