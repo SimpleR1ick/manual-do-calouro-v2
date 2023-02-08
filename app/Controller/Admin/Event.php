@@ -29,7 +29,7 @@ class Event extends Page {
         $paginaAtual = $queryParams['page'] ?? 1;
 
         // INSTANCIA DE PAGINAÇÃO
-        $obPagination = new Pagination($quantidadeTotal, $paginaAtual, 5);
+        $obPagination = new Pagination($quantidadeTotal, $paginaAtual, 10);
 
         // RESULTADOS DA PAGINA
         $results = EntityCalendar::getDscEvents('id_evento DESC', $obPagination->getLimit());

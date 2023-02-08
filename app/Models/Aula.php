@@ -191,12 +191,12 @@ class Aula {
 
     /**
      * Método responsável por consultar todas as aulas com a descrição dos items
-     * @param string  $order 
-     * @param int $limit 
+     * @param string $order 
+     * @param string $limit 
      * 
      * @return \PDOStatement
      */
-    public static function getDscSchedules(string $order, int $limit): \PDOStatement {
+    public static function getDscSchedules(string $order, string $limit): \PDOStatement {
         $sql = "SELECT id_aula,
                     dsc_dia_semana,
                     hora_aula_inicio,

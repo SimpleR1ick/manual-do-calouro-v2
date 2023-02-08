@@ -32,7 +32,7 @@ class User extends Page {
         $paginaAtual = $queryParams['page'] ?? 1;
 
         // INSTANCIA DE PAGINAÇÃO
-        $obPagination = new Pagination($quantidadeTotal, $paginaAtual, 5);
+        $obPagination = new Pagination($quantidadeTotal, $paginaAtual, 10);
 
         // RESULTADOS DA PAGINA
         $results = EntityUser::getUsers(null, 'id_usuario DESC', $obPagination->getLimit());
@@ -47,7 +47,6 @@ class User extends Page {
                 'email' => $obUser->getEmail(),
             ]);
         }
-
         // RETORNA OS DEPOIMENTOS
         return $itens;
     }

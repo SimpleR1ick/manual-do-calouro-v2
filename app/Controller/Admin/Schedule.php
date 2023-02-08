@@ -33,27 +33,26 @@ class Schedule extends Page {
         $obPagination = new Pagination($quantidadeTotal, $paginaAtual, 10);
 
         // RESULTADOS DA PAGINA
-        $results = EntitySchedule::getDscSchedules('id_aula ASC', (int)$obPagination->getLimit());
+        $results = EntitySchedule::getDscSchedules('id_aula ASC', $obPagination->getLimit());
 
         // RENDERIZA O ITEM
-        while ($obShedule = $results->fetch(\PDO::FETCH_ASSOC)) {
+        while ($shedule = $results->fetch(\PDO::FETCH_ASSOC)) {
             // VIEW De DEPOIMENTOSS
             $itens .= View::render('admin/modules/schedules/item',[
-                'click' => "onclick=deleteItem({$obShedule['id_aula']})",
-                'id'         => $obShedule['id_aula'],
-                'semana'     => $obShedule['dsc_dia_semana'],
-                'horario'    => $obShedule['hora_aula_inicio'],
-                'sala'       => $obShedule['dsc_sala_aula'],
-                'disciplina' => $obShedule['dsc_disciplina'],
-                'professor'  => $obShedule['nom_usuario']
+                'click' => "onclick=deleteItem({$shedule['id_aula']})",
+                'id'         => $shedule['id_aula'],
+                'semana'     => $shedule['dsc_dia_semana'],
+                'horario'    => $shedule['hora_aula_inicio'],
+                'sala'       => $shedule['dsc_sala_aula'],
+                'disciplina' => $shedule['dsc_disciplina'],
+                'professor'  => $shedule['nom_usuario']
             ]);
         }
-
         // RETORNA OS DEPOIMENTOS
         return $itens;
     }
 
-       /**
+    /**
      * Método responsavel por renderizar a view de listagem de usuarios
      * @param \App\Http\Request
      * 
