@@ -87,25 +87,28 @@ class Page {
      */
     private static function getLogin(): string {
         // RETORNA O DROPDOWN CASO LOGADO
-        if (Session::isLogged()) {
-            // OBTÊM OS DADOS DO USUÁRIO
-            $obUser = EntityUser::getUserById(Session::getId());
-
-            // LAMBDA - RENDERIZA LINK SE USUÁRIO FOR ADMINISTRADOR
-            $isAdmin = function($lv) {
-                if ($lv == 1) {
-                    return View::render('pages/header/admin');
-                }
-                return '';
-            };
-            // RETORNA O DROPDOWN DO LOGIN
-            return View::render('pages/header/dropdown', [
-                'imagem' => $obUser->getImg_perfil(),
-                'admin'  => $isAdmin($obUser->getFk_acesso())
-            ]);
+        if (!Session::isLogged()) {
+            // RETORNA O BOTÃO DO LOGIN
+            return View::render('pages/header/button');
         }
-        // RETORNA O BOTÃO DO LOGIN
-        return View::render('pages/header/button');
+        // OBTÊM OS DADOS DO USUÁRIO
+        $obUser = EntityUser::getUserById(Session::getId());
+
+        // VERIFICA SE O USUARIO E ADMIN
+        if ($obUser->getFk_acesso() == 1) {
+            // RENDERIZA OS LINKS DO ADMIN
+            $admin = View::render('pages/header/admin');
+        } 
+        else {
+            // RENDERIZA OS LINKS DO USUARIO
+            $user = View::render('pages/header/user');
+        }
+        // RETORNA O DROPDOWN DO LOGIN
+        return View::render('pages/header/dropdown', [
+            'imagem' => $obUser->getImg_perfil(),
+            'admin'  => $admin ?? '',
+            'user'   => $user ?? ''
+        ]);
     }
 
     /**
