@@ -20,6 +20,11 @@
     
     <script src="{{URL}}/resources/js/contato.js"></script>
 
+    <div class="mb-3">
+        <label for="filter" class="form-label">Filtrar</label>
+        <input type="text" class="form-control" id="filter" placeholder="Filtro">
+    </div>
+
     <ul class="nav nav-tabs rounded border-bottom-0" id="tabsContatos" role="tablist">
         <li class="nav-item" role="presentation">
             <button class="nav-link active" id="servidor-tab" data-bs-toggle="tab" data-bs-target="#servidor-tab-pane" type="button" role="tab" aria-controls="servidor-tab-pane" aria-selected="false">
@@ -48,3 +53,5 @@
         </div>
     </div>
 </section>
+
+<script src="{{URL}}/resources/js/content/contact/contact_filter.js"></script>
