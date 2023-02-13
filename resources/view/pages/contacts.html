@@ -20,9 +20,17 @@
     
     <script src="{{URL}}/resources/js/contato.js"></script>
 
-    <div class="mb-3">
-        <label for="filter" class="form-label">Filtrar</label>
-        <input type="text" class="form-control" id="filter" placeholder="Filtro">
+    <div class="row mt-5">
+        <div class="col-md-5 mx-auto">
+            <div class="input-group">
+                <input class="form-control border-end-0 border" id="filter" type="search" placeholder="Pesquisar">
+                <span class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </span>
+            </div>
+        </div>
     </div>
 
     <ul class="nav nav-tabs rounded border-bottom-0" id="tabsContatos" role="tablist">
