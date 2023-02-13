@@ -25,7 +25,6 @@ class HorarioAula {
 
     /**
      * Método responsável por consultar os horários de tempo
-     * 
      * @return array
      */
     public static function getTimes(): array {

@@ -3,6 +3,7 @@
 namespace App\Controller\Pages;
 
 use App\Http\Request;
+use App\Models\Constant\Sala as EntityRoom;
 use App\Models\Turma as EntityGrade;
 use App\Models\Admin as EntityAdmin;
 use App\Models\Setor as EntitySector;
@@ -36,8 +37,7 @@ class Profile extends Page {
             'foto'     => $obUser->getImg_perfil(),
             'nome'     => $obUser->getNom_usuario(),
             'email'    => $obUser->getEmail(),
-            'texto'    => $view['text'],
-            'campo'    => $view['column']
+            'campo'    => $view
         ]);
         // RETORNA A VIEW DA PAGINA
         return parent::getPage('Perfil', $content);
@@ -47,24 +47,21 @@ class Profile extends Page {
      * Método responsável por definir o texto de acordo com o tipo de usuário
      * @param \App\Models\Usuario $obUser
      * 
-     * @return array
+     * @return string
      */
-    public static function getTextType(EntityUser $obUser): array {
+    public static function getTextType(EntityUser $obUser): string {
         // DECLARAÇÃO DE VARIAVEIS
-        $text = '';
-        $column = '';
+        $content = '';
 
         // RELATIVO NIVEL DE ACESSO DO USUARIO
         switch ($obUser->getFk_acesso()) {
             case 2:
-                $text = 'Matrícula';
-                $column = View::render('pages/components/profile/enrollment');
+                $content = View::render('pages/components/profile/enrollment');
 
                 break;
 
             case 3:
                 // DECLARAÇÃO DE VARIAVEIS
-                $text = 'Turma';
                 $hidden = '';
 
                 // CONSULTA A TURMA DO ALUNO
@@ -74,7 +71,7 @@ class Profile extends Page {
                     $hidden = parent::setHiddens($class);
                 }
 
-                $column = View::render('pages/components/profile/class', [
+                $content = View::render('pages/components/profile/class', [
                     'hidden'   => $hidden,
                     'curso'    => self::getCourse(),
                     'modulo'   => self::getModule()
@@ -86,8 +83,7 @@ class Profile extends Page {
                 // CONSULTA O SETOR DO SERVIDOR
                 $setor = $obUser->getUserSector($obUser->getId_usuario());
 
-                $text = 'Setor';
-                $column = View::render('pages/components/profile/sector', [
+                $content = View::render('pages/components/profile/sector', [
                     'h-setor' => $setor['setor'],
                     'setor'   => self::getSector()
                 ]);
@@ -97,19 +93,31 @@ class Profile extends Page {
             case 5:
                 // CONSULTA OS DADOS DO PROFESSOR
                 $obTeacher = EntityTeacher::getTeacherById($obUser->getId_usuario());
-                $text = 'Regras';
 
-                $column = View::render('pages/components/profile/rules', [
-                    'regras' => $obTeacher->getRules()
+                $content = View::render('pages/components/profile/rules', [
+                    'regras' => $obTeacher->getRules(),
+                    'sala'   => self::getRooms()
                 ]);
 
                 break;            
         }
         // RETORNA O TEXTO E A VIEW DA COLUNA
-        return [
-            'text'  => $text,
-            'column' => $column
-        ];
+        return $content;
+    }
+
+    private static function getRooms() {
+        $content = '';
+        $rooms = EntityRoom::getRooms();
+
+        foreach ($rooms as $rooms) {
+            $content .= View::render('pages/components/profile/room_item', [
+                'id' => $rooms['id_sala'],
+                'value' => $rooms['num_sala']
+            ]);
+        }
+        return View::render('pages/components/profile/room', [
+            'salas' => $content
+        ]);
     }
 
     /**
