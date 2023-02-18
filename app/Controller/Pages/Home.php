@@ -56,14 +56,18 @@ class Home extends Page {
 
     /**
      * Método responsável por retornar o contéudo (view) da página home
+     * * @param \App\Http\Request $request
+     * 
      * @return string
      */
-    public static function getHome($request) {
-        
-        $form = '<p>Faça login para comentar</p>';
+    public static function getHome(Request $request): string {
+        // DECLARAÇÃO DE VARIAVEIS        
+        $form = '';
 
         if (Session::isLogged()) {
-            $form = View::render('pages/components/home/form');
+            $form = View::render('pages/components/home/form');  
+        } else {
+            $form = View::render('pages/components/home/need_login');
         }
 
         // VIEW DA HOME
@@ -77,8 +81,10 @@ class Home extends Page {
     }
 
     /**
+     * Método responsavel por cadastrar um comentario
+     * @param \App\Http\Request $request
      * 
-     * 
+     * @return void
      */
     public static function setNewComment(Request $request): void {
         // POST VARS
