@@ -1,12 +1,9 @@
 {
-    "require_login": {
-        "type": "danger",
-        "text": "Login necessário!"
-    },
     "invalid_acess": {
         "type": "danger",
         "text": "Acesso negado!"
     },
+    
     "invalid_chars": {
         "type": "danger",
         "text": "Dados invalidos!"
@@ -25,15 +22,51 @@
     },
     "invalid_data": {
         "type": "danger",
-        "text": "E-mail e/ou senha incorretos!"
+        "text": "E-mail e/ou senha inválidos!"
     },
     "invalid_hash": {
         "type": "danger",
-        "text": "Hash de confirmação inválida!"
+        "text": "Chave de recuperação inválida!"
+    },
+    "duplicated_email": {
+        "type": "danger",
+        "text": "E-mail já cadastrado!"
+    },
+    "user_registered": {
+        "type": "success",
+        "text": "Cadastrado com sucesso!"
+    },
+    "user_updated": {
+        "type": "success",
+        "text": "Atualizado com sucesso!"
+    },
+    "user_deleted": {
+        "type": "success",
+        "text": "Excluído com sucesso!"
+    },
+    "require_login": {
+        "type": "danger",
+        "text": "Login necessário!"
     },
     "exceeded_size": {
         "type": "danger",
         "text": "Tamanho limite do arquivo execedido."
+    },
+    "inactive_user": {
+        "type": "danger",
+        "text": "Usuário invativo!"
+    },
+    "profile_updated": {
+        "type": "success",
+        "text": "Perfil atualizado com sucesso!"
+    },
+    "email_sent": {
+        "type": "info",
+        "text": "E-mail enviado com sucesso!"
+    },
+    "email_erro": {
+        "type": "danger",
+        "text": "Erro! E-mail não enviado!"
     },
     "recovery_send": {
         "type": "success",
@@ -47,9 +80,29 @@
         "type": "success",
         "text": "Senha atualizada!"
     },
+    "enrollment_duplicated": {
+        "type": "danger",
+        "text": "Matrícula já registrada!"
+    },
+    "contact_registered": {
+        "type": "success",
+        "text": "Contato cadastrado com sucesso"
+    },
+    "contact_updated": {
+        "type": "success",
+        "text": "Contato atualizado com sucesso"
+    },
+    "contact_deleted": {
+        "type": "success",
+        "text": "Contato excluido com sucesso!"
+    },
+    "comment_deleted": {
+        "type": "success",
+        "text": "Comentario excluido com sucesso!"
+    },
     "upload_error": {
         "type": "danger",
-        "text": "Erro no upload"
+        "text": "Erro no upload da foto!"
     },
     "image_type": {
         "type": "danger",
@@ -59,28 +112,40 @@
         "type": "danger",
         "text": "O tamanho da imagem excede 2 MB"
     },
+    "image_erro": {
+        "type": "danger",
+        "text": "Problema no upload de imagem."
+    },
+    "event_registered": {
+        "type": "success",
+        "text": "Evento cadastrado com sucesso!."
+    },
+    "event_updated": {
+        "type": "success",
+        "text": "Evento atualizado com sucesso!."
+    }
+    ,"event_deleted": {
+        "type": "success",
+        "text": "Evento excluido com sucesso!."
+    },
+    "schedule_registered": {
+        "type": "success",
+        "text": "Aula cadastrado com sucesso!."
+    },
+    "schedule_updated": {
+        "type": "success",
+        "text": "Aula atualizado com sucesso!."
+    }
+    ,"schedule_deleted": {
+        "type": "success",
+        "text": "Aula excluido com sucesso!."
+    },
     "non_existent": {
         "type": "danger",
-        "text": "Não encontrado."
+        "text": "Sala de aula não encontrada :(."
     },
-    "register": {
+    "delete_error": {
         "type": "danger",
-        "text": "Registrado com sucesso"
-    },
-    "updated": {
-        "type": "danger",
-        "text": "Atualizado com sucesso"
-    },
-    "deleted": {
-        "type": "danger",
-        "text": "Excluido com sucesso"
-    },
-    "duplicated": {
-        "type": "danger",
-        "text": "Já registrado!"
-    },
-    "inactive": {
-        "type": "danger",
-        "text": "Invativo!"
+        "text": "Erro ao excluir a conta."
     }
 }
