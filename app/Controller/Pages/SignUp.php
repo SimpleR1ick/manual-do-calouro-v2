@@ -3,10 +3,14 @@
 namespace App\Controller\Pages;
 
 use App\Http\Request;
+use App\Models\Mail\Email;
 use App\Models\Usuario as EntityUser;
+use App\Models\Chave as EntityHash;
+use App\Utils\Database;
 use App\Utils\Tools\Alert;
 use App\Utils\Sanitize;
 use App\Utils\View;
+use Exception;
 
 class SignUp extends Page {
 
@@ -74,10 +78,49 @@ class SignUp extends Page {
         $obUser->setNom_usuario($nome);
         $obUser->setEmail($email);
         $obUser->setSenha($password);
-      
-        // REALIZA O INSERT NO BANCO DE DADOS
-        $obUser->insertUser();
 
+        // CRIANDO UMA CONEXÃO COM BANCO DE DADOS
+        $connection = (new Database);
+
+        try {
+            // INICIANDO PROCESSO DE TRANSAÇÃO
+            $connection->beginTransaction();
+
+            // VERIFICA SE O USUARIO FOI INSERIDO COM SUCESSO
+            if ($obUser->insertUserTransaction($connection)) {
+                throw new Exception('Erro ao cadastrar o usuario', 0);
+            }
+            // INSTANCIA DA CHAVE DE CONFIRMAÇÃO
+            $obHash = new EntityHash;
+
+            $obHash->setFkId($obUser->getId_usuario());
+            $obHash->setHash();
+
+            // VERIFICA SE A CHAVE FOI CADASTRADA NA TABELA
+            if (!$obHash->insertHashTransaction($connection)) {
+                throw new Exception('Erro ao cadastrar a hash', 0);
+            }
+            // INSTANCIA DO EMAIL + CRIAÇÃO DO LINK DE ATIVAÇÃO
+            $obEmail = new Email;
+
+            $link = "<a href=".getenv(URL)."/active?chave={$obHash->getHash()}>Clique aqui</a>";
+
+            $subject = 'Confirmar conta';
+            $message = 'Clique no link para ativar sua conta'. $link;
+
+            // VERIFICA SE O EMAIL DE CONFIRMAÇÃO FOI ENVIADO
+            if (!$obEmail->sendEmail($obUser->getEmail(), $subject, $message)) {
+                throw new Exception('Erro ao enviar o e-mail', 0);
+            }
+            // SALVA AS ALTERAÇÕES NO BANCO DE DADOS
+            $connection->commit();
+        }
+        catch(Exception $e) {
+            // REVERTE TODAS AS OPERAÇÕES
+            $connection->rollback();
+
+            $request->getRouter()->redirect('/singup?status=email_erro');
+        }
         // REDIRECIONA PARA PAGINA DE LOGIN
         $request->getRouter()->redirect('/signin?status=user_registered');
     }
