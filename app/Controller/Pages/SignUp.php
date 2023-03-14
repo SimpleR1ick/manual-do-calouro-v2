@@ -6,8 +6,8 @@ use App\Http\Request;
 use App\Models\Mail\Email;
 use App\Models\Usuario as EntityUser;
 use App\Models\Chave as EntityHash;
-use App\Utils\Database;
 use App\Utils\Tools\Alert;
+use App\Utils\Database;
 use App\Utils\Sanitize;
 use App\Utils\View;
 use Exception;
@@ -78,6 +78,7 @@ class SignUp extends Page {
         $obUser->setNom_usuario($nome);
         $obUser->setEmail($email);
         $obUser->setSenha($password);
+        $obUser->setNivel(2);
 
         // CRIANDO UMA CONEXÃO COM BANCO DE DADOS
         $connection = (new Database);
@@ -87,7 +88,7 @@ class SignUp extends Page {
             $connection->beginTransaction();
 
             // VERIFICA SE O USUARIO FOI INSERIDO COM SUCESSO
-            if ($obUser->insertUserTransaction($connection)) {
+            if (!$obUser->insertUserTransaction($connection)) {
                 throw new Exception('Erro ao cadastrar o usuario', 0);
             }
             // INSTANCIA DA CHAVE DE CONFIRMAÇÃO
@@ -103,7 +104,7 @@ class SignUp extends Page {
             // INSTANCIA DO EMAIL + CRIAÇÃO DO LINK DE ATIVAÇÃO
             $obEmail = new Email;
 
-            $link = "<a href=".getenv(URL)."/active?chave={$obHash->getHash()}>Clique aqui</a>";
+            $link = "<a href=".getenv('URL')."/active?chave={$obHash->getHash()}>Clique aqui</a>";
 
             $subject = 'Confirmar conta';
             $message = 'Clique no link para ativar sua conta'. $link;
@@ -119,7 +120,7 @@ class SignUp extends Page {
             // REVERTE TODAS AS OPERAÇÕES
             $connection->rollback();
 
-            $request->getRouter()->redirect('/singup?status=email_erro');
+            $request->getRouter()->redirect('/signup?status=email_erro');
         }
         // REDIRECIONA PARA PAGINA DE LOGIN
         $request->getRouter()->redirect('/signin?status=user_registered');

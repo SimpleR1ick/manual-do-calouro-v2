@@ -3,6 +3,9 @@
 // ROTAS DA PAGINA SOBRE
 include_once __DIR__.'/pages/about.php';
 
+// ROTAS DA PAGINA ATIVAÇÃO
+include_once __DIR__.'/pages/active.php';
+
 // ROTAS DA PAGINA CALENDARIO
 include_once __DIR__.'/pages/calendar.php';
 

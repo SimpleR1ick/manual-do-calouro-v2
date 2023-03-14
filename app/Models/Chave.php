@@ -48,6 +48,8 @@ class Chave {
      * @return mixed
      */
     public function insertHashTransaction(Database $conn): mixed {
+        $conn->setTable('chave');
+
         return $conn->execute("INSERT INTO chave (fk_usuario_id_usuario, chave_confirma) VALUES ({$this->fk_usuario_id_usuario}, '{$this->chave_confirma}')");
     }
 
