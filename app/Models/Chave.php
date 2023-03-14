@@ -42,6 +42,16 @@ class Chave {
     }
 
     /**
+     * Método responsavel por inserir uma chave na tabela em uma conexão aberta
+     *
+     * @param \App\Utils\Database $conn
+     * @return mixed
+     */
+    public function insertHashTransaction(Database $conn): mixed {
+        return $conn->execute("INSERT INTO chave (fk_usuario_id_usuario, chave_confirma) VALUES ({$this->fk_usuario_id_usuario}, '{$this->chave_confirma}')");
+    }
+
+    /**
      * Método responsável por atualizar uma chave na tabela
      * 
      * @return boolean
