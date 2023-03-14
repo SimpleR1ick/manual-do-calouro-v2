@@ -100,10 +100,6 @@ class Database {
 		return $this->connection;
 	}
 
-	public function setTable($table) {
-		$this->table = $table;
-	}
-
 	/**
 	 * Desativa o auto-commit da instancia
 	 * @return void

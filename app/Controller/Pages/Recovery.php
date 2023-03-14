@@ -85,7 +85,9 @@ class Recovery extends Page {
      * @return boolean
      */
     public static function sendRecovery(EntityHash $obHash, string $email) {
-        $link = "<a href=".getenv(URL)."/redefine?chave={$obHash->getHash()}'>Clique aqui</a>";
+
+        $key  = $obHash->getHash();
+        $link = "<a href='http://localhost/mvc-mdc/redefine?chave=$key'>Clique aqui</a>";
 
         // ASSUNTO E MENSAGEM
         $subject = 'Recuperar senha';

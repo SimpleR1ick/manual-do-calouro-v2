@@ -77,33 +77,6 @@ class Usuario {
     }
 
     /**
-     * Método responsável por cadastrar a instancia atual no banco de dados 
-     * com uma conexão ativa
-     *
-     * @param [type] $conn
-     * @return bool
-     */
-    public function insertUserTransaction($conn): bool {
-        $conn->setTable('usuario');
-
-        // ATRIBUI AO OBJETO A HORA ATUAL
-        $this->setAdd_data();
-
-        // INSERE A INSTÂNCIA NO BANCO
-        $this->setId_usuario(($conn)->insert([
-            'nom_usuario'         => $this->nom_usuario,
-            'email'               => $this->email,
-            'senha'               => $this->senha,
-            'add_data'            => $this->add_data,
-            'img_perfil'          => $this->img_perfil,
-            'fk_nivel_id_nivel'   => $this->fk_nivel_id_nivel,
-            'fk_acesso_id_acesso' => $this->fk_acesso_id_acesso
-        ]));
-        // SUCESSO
-        return true;
-    }
-
-    /**
      * Método responsável por atualizar os dados no banco
      * @return boolean
      */
@@ -310,7 +283,7 @@ class Usuario {
      * Get ativo
      * @return int
      */
-    public function getNivel(): int { 
+    public function getAtivo(): int { 
         return $this->fk_nivel_id_nivel;
     }
 
@@ -318,8 +291,8 @@ class Usuario {
      * Set ativo
      * @param int $ativo
      */
-    public function setNivel(int $nivel): void {
-        $this->fk_nivel_id_nivel = $nivel;
+    public function setAtivo(int $ativo): void {
+        $this->fk_nivel_id_nivel = $ativo;
     }
 
     /**
