@@ -63,7 +63,7 @@ class SignIn extends Page {
             $request->getRouter()->redirect('/signin?status=invalid_data');
         }
         // VERIFICA SE O USUÁRIO ESTÁ ATIVO NO SISTEMA
-        if (!$obUser->getAtivo() != 0) {
+        if (!$obUser->getNivel() != 0 or 2) {
             $request->getRouter()->redirect('/signin?status=inactive_user');
         }
         // REALIZA O LOGIN, CRIANDO UMA SESSÃO

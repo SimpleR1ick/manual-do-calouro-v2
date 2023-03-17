@@ -3,7 +3,7 @@
         "type": "danger",
         "text": "Acesso negado!"
     },
-    
+
     "invalid_chars": {
         "type": "danger",
         "text": "Dados invalidos!"
@@ -43,6 +43,10 @@
     "user_deleted": {
         "type": "success",
         "text": "Excluído com sucesso!"
+    },
+    "user_activeted": {
+        "type": "success",
+        "text": "Conta ativada com sucesso!"
     },
     "require_login": {
         "type": "danger",
@@ -123,8 +127,8 @@
     "event_updated": {
         "type": "success",
         "text": "Evento atualizado com sucesso!."
-    }
-    ,"event_deleted": {
+    },
+    "event_deleted": {
         "type": "success",
         "text": "Evento excluido com sucesso!."
     },
@@ -135,8 +139,8 @@
     "schedule_updated": {
         "type": "success",
         "text": "Aula atualizado com sucesso!."
-    }
-    ,"schedule_deleted": {
+    },
+    "schedule_deleted": {
         "type": "success",
         "text": "Aula excluido com sucesso!."
     },
