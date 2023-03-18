@@ -60,6 +60,10 @@
         "type": "danger",
         "text": "Usuário invativo!"
     },
+    "confirm_user": {
+        "type": "danger",
+        "text": "Necessario confirmar e-mail!"
+    },
     "profile_updated": {
         "type": "success",
         "text": "Perfil atualizado com sucesso!"
