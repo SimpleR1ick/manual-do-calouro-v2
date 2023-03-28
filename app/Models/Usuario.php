@@ -77,13 +77,12 @@ class Usuario {
     }
 
     /**
-     * Método responsável por cadastrar a instancia atual no banco de dados 
-     * com uma conexão ativa
-     *
-     * @param [type] $conn
+     * Método responsável por cadastrar a instancia existente no banco de dados 
+     * @param \App\Utils\Database $conn
+     * 
      * @return bool
      */
-    public function insertUserTransaction($conn): bool {
+    public function insertUserTransaction(Database $conn): bool {
         $conn->setTable('usuario');
 
         // ATRIBUI AO OBJETO A HORA ATUAL
@@ -105,10 +104,29 @@ class Usuario {
 
     /**
      * Método responsável por atualizar os dados no banco
+     * 
      * @return boolean
      */
     public function updateUser(): bool {
         return (new Database('usuario'))->update("id_usuario = {$this->id_usuario}", [
+            'nom_usuario'         => $this->nom_usuario,
+            'email'               => $this->email,
+            'senha'               => $this->senha,
+            'add_data'            => $this->add_data,
+            'img_perfil'          => $this->img_perfil,
+            'fk_nivel_id_nivel'   => $this->fk_nivel_id_nivel,
+            'fk_acesso_id_acesso' => $this->fk_acesso_id_acesso
+        ]);
+    }
+
+    /**
+     * Método responsável por atualizar os dados no banco em uma instancia existente
+     * @param \App\Utils\Database $conn
+     * 
+     * @return boolean
+     */
+    public function updateUserTransaction(Database $conn): bool {
+        return ($conn)->update("id_usuario = {$this->id_usuario}", [
             'nom_usuario'         => $this->nom_usuario,
             'email'               => $this->email,
             'senha'               => $this->senha,
@@ -125,6 +143,18 @@ class Usuario {
      */
     public function deleteUser(): bool {
         return (new Database('usuario'))->delete("id_usuario = {$this->id_usuario}");
+    }
+
+    /**
+     * Método responsável por excluir um usuário do banco
+     * @param \App\Utils\Database $conn
+     * 
+     * @return boolean
+     */
+    public function deleteUserTransaction(Database $conn): bool {
+        $conn->setTable('usuario');
+
+        return ($conn)->delete("id_usuario = {$this->id_usuario}");
     }
 
     /**

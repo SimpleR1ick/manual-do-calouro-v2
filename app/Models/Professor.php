@@ -33,6 +33,24 @@ class Professor {
     }
 
     /**
+     * Método responsável por cadastrar um usuário como professor em uma instancia atual
+     * @param \App\Utils\Database $conn
+     * 
+     * @return boolean
+     */
+    public function insertTeacherTransaction(Database $conn) {
+        $conn->setTable('professor');
+
+        ($conn)->insert([
+            'fk_servidor_fk_usuario_id_usuario' => $this->fk_servidor_fk_usuario_id_usuario,
+            'regras'                            => $this->regras
+        ], false);
+
+        // RETORNA VERDADEIRO
+        return true;
+    }
+
+    /**
      * Método responsável por atualizar as regras de um usuário professor
      * @return boolean
      */

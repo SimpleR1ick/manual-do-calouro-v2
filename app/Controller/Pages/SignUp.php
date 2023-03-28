@@ -81,7 +81,7 @@ class SignUp extends Page {
         $obUser->setNivel(2);
 
         // CRIANDO UMA CONEXÃO COM BANCO DE DADOS
-        $connection = (new Database);
+        $connection = new Database;
 
         try {
             // INICIANDO PROCESSO DE TRANSAÇÃO

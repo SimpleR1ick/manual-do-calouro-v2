@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Http\Request;
+use App\Utils\Database;
 use App\Utils\View;
 use App\Utils\Pagination;
 use App\Models\Admin as EntityAdmin;
@@ -10,6 +11,7 @@ use App\Models\Usuario as EntityUser;
 use App\Models\Servidor as EntityServer;
 use App\Models\Professor as EntityTeacher;
 use App\Utils\Tools\Alert;
+use Exception;
 
 class User extends Page {
 
@@ -114,17 +116,29 @@ class User extends Page {
         if ($obUser instanceof EntityUser) {
             $request->getRouter()->redirect('/admin/users/new?status=duplicated_email');
         }
+
+        $connection = new Database;
+
+        $connection->beginTransaction();
+
         // NOVA INSTANCIA DE USUÁRIO
         $obUser = new EntityUser;
         $obUser->setNom_usuario($nome);
         $obUser->setEmail($email);
         $obUser->setSenha($senha);
         $obUser->setFk_acesso($status);
-        $obUser->setAtivo($ativo);
+        $obUser->setNivel($ativo);
 
-        $obUser->insertUser();
+        try {
+            $obUser->insertUserTransaction($connection);
 
-        self::registerByUserType($obUser);
+            self::registerByUserType($obUser, $connection);
+
+            $connection->commit();
+
+        } catch(Exception $e) {
+            $connection->rollBack();
+        }
 
         // REDIRECIONA O USUÁRIO
         $request->getRouter()->redirect('/admin/users/edit/'.$obUser->getId_usuario().'?status=user_registered');
@@ -151,7 +165,7 @@ class User extends Page {
         if (!$obUser instanceof EntityUser) {
             $request->getRouter()->redirect('/admin/users');
         }
-        $obUser->getAtivo() == 1 ? $status['ativo'] = 'checked' : $status['inativo'] = 'checked';
+        $obUser->getNivel() == 1 ? $status['ativo'] = 'checked' : $status['inativo'] = 'checked';
 
         // CONTEUDO DO FORMULARIO
         $content = View::render('admin/modules/users/form', [
@@ -204,7 +218,7 @@ class User extends Page {
         $obUser->setNom_usuario($nome);
         $obUser->setEmail($email);
         $obUser->setSenha($senha);
-        $obUser->setAtivo($active);
+        $obUser->setNivel($active);
         $obUser->setFk_acesso($status);
 
         $obUser->updateUser();
@@ -243,30 +257,41 @@ class User extends Page {
      * 
      * @return void
      */
-    private static function registerByUserType(EntityUser $obUser): void {
+    private static function registerByUserType(EntityUser $obUser, Database $conn): void {
         // OBTEM O ID DO USUÁRIO
         $id = $obUser->getId_usuario();
 
         // NOVA INSTANCIA DE SERVIDOR
         $obServer = new EntityServer;
+
         $obServer->setFk_id_usuario($id);
         $obServer->setFk_id_sala(1);
-        $obServer->insertServer();
+
+        // VERIFICA SE A INSERÇÃO OCORREU COM SUCESSO
+        if (!$obServer->insertServerTransaction($conn)) {
+            throw new Exception("Erro ao inserir servidor!", 0);
+        }
 
         switch($obUser->getFk_acesso()) {
             case 4: // ADMINISTRATIVO
                 $obAdmin = new EntityAdmin;
                 $obAdmin->setFk_id_usuario($id);
                 $obAdmin->setFk_id_setor(1);
-                $obAdmin->insertAdmin();
 
+                // VERIFICA SE HOUVE ERRO AO INSERIR ADMIN
+                if (!$obAdmin->insertAdminTransaction($conn)) {
+                    throw new Exception("Erro ao inserir administrativo!", 0);
+                }
                 break;
 
             case 5: // PROFESSOR
                 $obTeacher = new EntityTeacher;
                 $obTeacher->setFk_id_usuario($id);
-                $obTeacher->insertTeacher();
 
+                // VERIFICA SE HOUVE ERRO AO INSERIR PROFESSOR
+                if (!$obTeacher->insertTeacherTransaction($conn)) {
+                    throw new Exception("Erro ao inserir professor!", 0);
+                }
                 break;
         }
     }

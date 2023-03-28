@@ -34,6 +34,24 @@ class Servidor {
     }
 
     /**
+     * Método responsável por cadastrar um usuário como servidor em ums instancia atual
+     * @param \App\Utils\Database $conn
+     * 
+     * @return boolean
+     */
+    public function insertServerTransaction(Database $conn) {
+        $conn->setTable('servidor');
+
+        ($conn)->insert([
+            'fk_usuario_id_usuario' => $this->fk_usuario_id_usuario,
+            'fk_sala_id_sala'       => $this->fk_sala_id_sala
+        ], false);
+
+        // RETORNA VERDADEIRO
+        return true;
+    }
+
+    /**
      * Método responsável por atualizar a sala de um servidor
      * 
      * @return boolean

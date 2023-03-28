@@ -33,6 +33,24 @@ class Admin {
     }
 
     /**
+     * Método responsável por cadastrar um usuário como servidor
+     * @param \App\Utils\Database $conn
+     * 
+     * @return boolean
+     */
+    public function insertAdminTransaction(Database $conn): bool {
+        $conn->setTable('administrativo')
+
+        ($conn)->insert([
+            'fk_servidor_fk_usuario_id_usuario' => $this->fk_servidor_fk_usuario_id_usuario,
+            'fk_setor_id_setor'                 => $this->fk_setor_id_setor
+        ], false);
+
+        // RETORNA VERDADEIRO
+        return true;
+    }
+
+    /**
      * Método responsável por atualizar o setor do servidor
      * 
      * @return bool
