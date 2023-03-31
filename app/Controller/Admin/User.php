@@ -55,7 +55,7 @@ class User extends Page {
 
     /**
      * Método responsável por renderizar a view de listagem de usuários
-     * @param \App\Http\Request
+     * @param \App\Http\Request $request
      * 
      * @return string
      */
@@ -73,7 +73,7 @@ class User extends Page {
 
     /**
      * Método responsável por retornar o formulário de cadastro de um novo usuário
-     * @param \App\Http\Request
+     * @param \App\Http\Request $request
      * 
      * @return string
      */
@@ -113,34 +113,42 @@ class User extends Page {
         // VALIDA O EMAIL DO USUÁRIO
         $obUser = EntityUser::getUserByEmail($email);
 
+        // VALIDA A INSTANCIA DA CLASSE
         if ($obUser instanceof EntityUser) {
             $request->getRouter()->redirect('/admin/users/new?status=duplicated_email');
         }
-
+        // NOVA INSTANCICA DE CONEXÃO
         $connection = new Database;
 
+        // INICIANDO TRANSAÇÃO
         $connection->beginTransaction();
 
-        // NOVA INSTANCIA DE USUÁRIO
-        $obUser = new EntityUser;
-        $obUser->setNom_usuario($nome);
-        $obUser->setEmail($email);
-        $obUser->setSenha($senha);
-        $obUser->setFk_acesso($status);
-        $obUser->setNivel($ativo);
-
         try {
+            // NOVA INSTANCIA DE USUÁRIO
+            $obUser = new EntityUser;
+
+            $obUser->setNom_usuario($nome);
+            $obUser->setEmail($email);
+            $obUser->setSenha($senha);
+            $obUser->setFk_acesso($status);
+            $obUser->setNivel($ativo);
+
+            // INSERE O USUARIO COM CONEXÃO EXISTENTE
             $obUser->insertUserTransaction($connection);
 
             self::registerByUserType($obUser, $connection);
 
+            // SALVA AS ALTERAÇÕES NO BD
             $connection->commit();
 
         } catch(Exception $e) {
+            // REVER ALTERAÇÕES NO BD
             $connection->rollBack();
-        }
 
-        // REDIRECIONA O USUÁRIO
+            // REDIRECIONA COM MENSAGEM DE ERRO
+            $request->getRouter()->redirect('/admin/users/new?status=register_error');
+        }
+        // REDIRECIONA O PARA EDIÇÃO COM MENSAGEM DE SUCESSO
         $request->getRouter()->redirect('/admin/users/edit/'.$obUser->getId_usuario().'?status=user_registered');
     }
 
@@ -210,6 +218,7 @@ class User extends Page {
         // VALIDA O EMAIL DO USUÁRIO
         $obUserEmail = EntityUser::getUserByEmail($email);
 
+        // VERIFICA SE A INSTANCIA E VALIDA E SE O ID E DIFERENTE DO ATUAL
         if ($obUserEmail instanceof EntityUser && $obUserEmail->getId_usuario() != $id) {
             $request->getRouter()->redirect('/admin/users/edit/'.$id.'?status=duplicated_email');
         }
@@ -229,7 +238,7 @@ class User extends Page {
 
     /**
      * Método responsável por excluir um usuário
-     * @param \App\Http\Request
+     * @param \App\Http\Request $request
      * 
      * @return void
      */
@@ -254,12 +263,14 @@ class User extends Page {
     /**
      * Método responsável por inserir um usuário professor e administrador nas tabelas de herança
      * @param \App\Models\Usuario $obUser
+     * @param \App\Utils\Database $conn
      * 
      * @return void
      */
     private static function registerByUserType(EntityUser $obUser, Database $conn): void {
         // OBTEM O ID DO USUÁRIO
         $id = $obUser->getId_usuario();
+        $lv = $obUser->getFk_acesso();
 
         // NOVA INSTANCIA DE SERVIDOR
         $obServer = new EntityServer;
@@ -271,9 +282,10 @@ class User extends Page {
         if (!$obServer->insertServerTransaction($conn)) {
             throw new Exception("Erro ao inserir servidor!", 0);
         }
-
-        switch($obUser->getFk_acesso()) {
-            case 4: // ADMINISTRATIVO
+        // VERIFICA O ACESSO DO USUARIO
+        switch ($lv) {
+            case 4: 
+                // ADMINISTRATIVO
                 $obAdmin = new EntityAdmin;
                 $obAdmin->setFk_id_usuario($id);
                 $obAdmin->setFk_id_setor(1);
@@ -284,7 +296,8 @@ class User extends Page {
                 }
                 break;
 
-            case 5: // PROFESSOR
+            case 5: 
+                // PROFESSOR
                 $obTeacher = new EntityTeacher;
                 $obTeacher->setFk_id_usuario($id);
 

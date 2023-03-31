@@ -155,5 +155,13 @@
     "delete_error": {
         "type": "danger",
         "text": "Erro ao excluir a conta."
+    },
+    "update_eror": {
+        "type": "danger",
+        "text": "Erro ao atualizar dados!"
+    },
+    "register_error": {
+        "type": "danger",
+        "text": "Erro ao cadastrar!"
     }
 }
